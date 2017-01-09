@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+'''
+Created on 2017-01-03 13:35
+---------
+@summary: 程序入口
+---------
+@author: Boris
+'''
+import init
+import template.main
+
+def main():
+    template.main.main()
+
+import utils.tools as tools
+if __name__ == '__main__':
+    main()
+
