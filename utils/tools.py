@@ -155,12 +155,20 @@ def fit_url(urls, identis):
                 fit_urls.append(link)
     return list(set(fit_urls))
 
+_regexs = {}
+@log_function_time
 def get_info(html,regexs, allow_repeat = False):
     regexs = isinstance(regexs, str) and [regexs] or regexs
 
     for regex in regexs:
-        infos = re.findall(regex,str(html),re.S)
-        # infos = re.compile(regexs).findall(str(html))
+        try:
+            infos = _regexs[regex].findall(str(html))
+        except:
+            _regexs[regex] = re.compile(regex, re.S)
+            infos = _regexs[regex].findall(str(html))
+
+        # infos = re.findall(regex,str(html),re.S)
+        # infos = re.compile(regexs, re.S).findall(str(html))
         if len(infos) > 0:
             break
 
