@@ -13,9 +13,9 @@ import pymongo
 import utils.tools as tools
 from utils.log import log
 
-IP = tools.get_conf_value('config.conf', 'database', 'ip')
-PORT = int(tools.get_conf_value('config.conf', 'database', 'port'))
-DB = tools.get_conf_value('config.conf', 'database', 'db')
+IP = tools.get_conf_value('config.conf', 'mongodb', 'ip')
+PORT = int(tools.get_conf_value('config.conf', 'mongodb', 'port'))
+DB = tools.get_conf_value('config.conf', 'mongodb', 'db')
 
 
 class Singleton(object):
