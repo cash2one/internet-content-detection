@@ -9,15 +9,15 @@ Created on 2016-11-16 16:25
 import sys
 sys.path.append('../')
 import init
-import cx_Oracle
+import pymysql
 import utils.tools as tools
 from utils.log import log
 
-IP        = tools.get_conf_value('config.conf', 'oracledb', 'ip')
-PORT      = int(tools.get_conf_value('config.conf', 'oracledb', 'port'))
-DB        = tools.get_conf_value('config.conf', 'oracledb', 'db')
-USER_NAME = tools.get_conf_value('config.conf', 'oracledb', 'user_name')
-USER_PASS = tools.get_conf_value('config.conf', 'oracledb', 'user_pass')
+IP        = tools.get_conf_value('config.conf', 'mysql', 'ip')
+PORT      = int(tools.get_conf_value('config.conf', 'mysql', 'port'))
+DB        = tools.get_conf_value('config.conf', 'mysql', 'db')
+USER_NAME = tools.get_conf_value('config.conf', 'mysql', 'user_name')
+USER_PASS = tools.get_conf_value('config.conf', 'mysql', 'user_pass')
 
 class Singleton(object):
     def __new__(cls, *args, **kwargs):
@@ -27,13 +27,13 @@ class Singleton(object):
         return cls._inst
 
 
-class OracleDB(Singleton):
+class MysqlDB(Singleton):
     def __init__(self, ip = IP, port = PORT, db = DB, user_name = USER_NAME, user_pass = USER_PASS):
-        super(OracleDB, self).__init__()
+        super(MySQL, self).__init__()
 
         if not hasattr(self,'_db'):
             try:
-                self.conn = cx_Oracle.connect(user_name, user_pass, '%s:%d/%s'%(ip, port, db))
+                self.conn = pymysql.connect(host = ip, port = port, user = user_name, passwd = user_pass, db = db, charset = 'utf8')
                 self.cursor = self.conn.cursor()
             except Exception as e:
                 raise
@@ -89,15 +89,3 @@ class OracleDB(Singleton):
     def close(self):
         self.cursor.close()
         self.conn.close()
-
-# db = OracleDB()
-# sql =  'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select task_id from TAB_IVMS_TASK_INFO where task_status = 501)'
-# result = db.find(sql)
-# for x in result:
-#     print(x)
-
-
-# 12468 MainThread 2017-01-10 17:59:48 oracledb.py __init__ [line:41] DEBUG 连接到数据库 orcl
-# (2, 1, '颐和园', '郝蕾', '景点')
-# (1, 1, '色戒', '汤唯,梁朝伟', '苍井空')
-# [Finished in 0.9s]
