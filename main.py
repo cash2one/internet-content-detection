@@ -12,7 +12,6 @@ import template.main
 def main():
     template.main.main()
 
-import utils.tools as tools
 if __name__ == '__main__':
     main()
 

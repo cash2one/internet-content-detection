@@ -27,7 +27,7 @@ class  PaserControl(threading.Thread):
         while True:
             try:
                 urls = self._collector.get_urls(self._urlCount)
-                print("取到的url大小 %d"%len(urls))
+                log.debug("取到的url大小 %d"%len(urls))
 
                 # 判断是否结束
                 if self._collector.is_finished():

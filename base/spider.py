@@ -17,13 +17,14 @@ from base.parser_control import PaserControl
 from base.collector import Collector
 import threading
 
-class Spider():
-    def __init__(self, tab_urls, tab_site, search_keyword1 = [], search_keyword2 = [], search_keyword3 = [], begin_callback = None, end_callback = None):
+class Spider(threading.Thread):
+    def __init__(self, tab_urls, tab_site, parser_count = None, search_keyword1 = [], search_keyword2 = [], search_keyword3 = [], begin_callback = None, end_callback = None):
         '''
         @summary:
         ---------
         @param tab_urls: url表名
         @param tab_site: 网站表名
+        @param parser_count: parser 的线程数，为空时以配置文件为准
         @param search_keyword1: 搜索关键字（列表）全部包含
         @param search_keyword2: 搜索关键字（列表）至少包含一个
         @param search_keyword3: 搜索关键字（列表）一个都不能包含
@@ -32,6 +33,7 @@ class Spider():
         ---------
         @result:
         '''
+        super(Spider, self).__init__()
 
         self._db = MongoDB()
         self._db.set_unique_key(tab_urls, 'url')
@@ -47,7 +49,7 @@ class Spider():
         self._begin_callback = begin_callback
         self._end_callabck = end_callback
 
-        self._parser_count = int(tools.get_conf_value('config.conf', 'parser', 'parser_count'))
+        self._parser_count = int(tools.get_conf_value('config.conf', 'parser', 'parser_count')) if not parser_count else parser_count
         self._spider_site_name = tools.get_conf_value('config.conf', "spider_site", "spider_site_name").split(',')
         self._except_site_name = tools.get_conf_value('config.conf', "spider_site", "except_site_name").split(',')
 
@@ -61,7 +63,10 @@ class Spider():
                 if parser.NAME == spider_site_name.strip():
                     self._parsers.append(parser)
 
-    def start(self):
+    def run(self):
+        self.__start()
+
+    def __start(self):
         if self._begin_callback:
             self._begin_callback()
 

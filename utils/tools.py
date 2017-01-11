@@ -288,9 +288,9 @@ def replace_str(source_str, regex, replace_str = ''):
 
 ##################################################
 def get_conf_value(config_file, section, key):
-    cp = configparser.SafeConfigParser(allow_no_value = True)
+    cp = configparser.ConfigParser(allow_no_value = True)
     with codecs.open(config_file, 'r', encoding='utf-8') as f:
-        cp.readfp(f)
+        cp.read_file(f)
     return cp.get(section, key)
 
 ################################################
