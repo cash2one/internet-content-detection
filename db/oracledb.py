@@ -84,7 +84,7 @@ class OracleDB(Singleton):
             self.conn.commit()
 
         except:
-            raise Exception("%s表中%s有重复的数据, 请先去重"%(table, key))
+            log.error("%s表中%s有重复的数据, 请先去重" % (table, key))
 
     def close(self):
         self.cursor.close()

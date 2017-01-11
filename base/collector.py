@@ -8,13 +8,11 @@ Created on 2016-12-23 11:24
 '''
 import sys
 sys.path.append('..')
-import init
 import threading
 import base.constance as Constance
 import utils.tools as tools
 from db.mongodb import MongoDB
 from utils.log import log
-import os
 import time
 
 class Collector(threading.Thread):

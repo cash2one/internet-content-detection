@@ -8,7 +8,6 @@ Created on 2016-11-16 16:25
 '''
 import sys
 sys.path.append('../')
-import init
 import pymongo
 import utils.tools as tools
 from utils.log import log
@@ -119,5 +118,5 @@ class MongoDB(Singleton):
         try:
             self._db[table].ensure_index(key, unique=True)
         except:
-            raise Exception("%s表中%s有重复的数据, 请先去重"%(table, key))
+            log.error("%s表中%s有重复的数据, 请先去重"%(table, key))
 

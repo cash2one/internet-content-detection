@@ -7,9 +7,9 @@ Created on 2017-01-03 11:05
 @author: Boris
 '''
 
-from db.mongodb import MongoDB
 import base.constance as Constance
 import utils.tools as tools
+from db.mongodb import MongoDB
 
 db = MongoDB()
 
@@ -52,7 +52,67 @@ def add_website_info(table, site_id, url, name, domain = '', ip = '', address = 
         'public_safety':public_safety,
         'icp':icp,
         'read_status':0,
-        'read_status':tools.get_current_date()
+        'record_time': tools.get_current_date()
+    }
+    db.add(table, site_info)
+
+def add_content_info(table, site_id, url='', title='', content='',
+                     author='', video_url='', image_url='', origin='',
+                     watched_count='', comment_count='', share_count='',
+                     praise_count='', release_time='',file_size='',
+                     file_name='',magnet_link='',download_count='',
+                     reposts_count='',attitudes_count='',video_pic=''):
+    '''
+    @summary: 添加网站信息
+    ---------
+    @param table: 表名
+    @param site_id: 网站id
+    @param url: 网址
+    @param title: 标题
+    @param content: 正文
+    @param author: 作者
+    @param origin: 来源
+    @param release_time: 发布时间
+    @param file_name: 文件名
+    @param file_size: 文件大小
+    @param video_url: 视频url
+    @param image_url: 图片url
+    @param magnet_link: 磁力链接
+    @param download_count: 下载次数
+    @param watched_count: 观看数
+    @param comment_count: 评论数
+    @param share_count: 分享数
+    @param praise_count: 点赞数
+    @param reposts_count: 转发数
+    @param attitudes_count: 点赞数
+    @param video_pic: 视频封面图片链接
+    ---------
+    @result:
+    '''
+
+    site_info = {
+        'site_id':site_id,
+        'title':title,
+        'url':url,
+        'content':content,
+        'author':author,
+        'video_url':video_url,
+        'image_url':image_url,
+        'origin':origin,
+        'watched_count':watched_count,
+        'comment_count': comment_count,
+        'share_count': share_count,
+        'praise_count': praise_count,
+        'release_time': release_time,
+        'file_size':file_size,
+        'magnet_link':magnet_link,
+        'download_count':download_count,
+        'file_name':file_name,
+        'reposts_count':reposts_count,
+        'attitudes_count':attitudes_count,
+        'video_pic':video_pic,
+        'read_status':0,
+        'record_time': tools.get_current_date()
     }
     db.add(table, site_info)
 
@@ -95,7 +155,7 @@ def add_appsite_info(table, site_id, url, name , app_url = '', summary = '', upd
         'download_count':download_count,
         'release_time':release_time,
         'read_status':0,
-        'record_time':tools.get_current_date()
+        'record_time': tools.get_current_date()
     }
 
     db.add(table, app_info)

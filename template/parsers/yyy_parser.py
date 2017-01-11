@@ -1,12 +1,10 @@
 import sys
 sys.path.append('../../')
-import init
 
+import init
 import base.base_parser as base_parser
 import utils.tools as tools
 from utils.log import log
-from base.collector import Collector
-import base.constance as Constance
 
 SITE_ID = 2
 NAME = '百度'

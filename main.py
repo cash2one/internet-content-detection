@@ -6,7 +6,6 @@ Created on 2017-01-03 13:35
 ---------
 @author: Boris
 '''
-import init
 import template.main
 
 def main():

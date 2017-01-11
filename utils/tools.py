@@ -7,6 +7,7 @@ import re
 import json
 import configparser #读配置文件的
 import codecs
+import uuid
 from urllib.parse import quote
 from utils.log import log
 from tld import get_tld
@@ -15,6 +16,7 @@ from urllib.parse import urljoin
 from selenium import webdriver
 import requests
 import time
+from bs4 import BeautifulSoup
 from threading import Timer
 import functools
 import datetime
@@ -24,6 +26,13 @@ import execjs   # pip install PyExecJS
 
 TIME_OUT = 30
 TIMER_TIME = 5
+
+def get_tag(html, name=None, attrs={}, find_all = True):
+    if html:
+        soup = BeautifulSoup(html, "html.parser") if isinstance(html, str) else html
+        return soup.find_all(name, attrs) if find_all else soup.find(name, attrs)
+    else:
+        return ''
 
 # 装饰器
 def log_function_time(func):
@@ -52,7 +61,7 @@ def run_safe_model(func):
             return callfunc
         return run_func
     except Exception as e:
-        log.error(e)
+        log.error(func.__name__ + " " + str(e))
         return func
 #######################################################
 
@@ -61,9 +70,12 @@ def get_html_by_urllib(url, code = 'utf-8'):
     html = None
     if not url.endswith('.exe') and not url.endswith('.EXE'):
         page = None
+        is_timeout = False
         try:
             def timeout_handler(response):
-                response.close()
+                is_timeout = True
+                if response:
+                    response.close()
 
             page = request.urlopen(quote(url,safe='/:?=&'), timeout = TIME_OUT)
             # 设置定时器 防止在read时卡死
@@ -75,7 +87,9 @@ def get_html_by_urllib(url, code = 'utf-8'):
         except Exception as e:
             log.error(e)
         finally:
-            page and page.close()
+            # page and page.close()
+            if page and not is_timeout:
+                page.close()
 
     return html and len(html) < 1024 * 1024 and html or None
 
@@ -176,6 +190,12 @@ def get_info(html,regexs, allow_repeat = False):
 
 def get_domain(url):
     return get_tld(url)
+
+def get_text(soup, *args):
+    try:
+        return soup.get_text()
+    except:
+        return ''
 
 def del_html_tag(content):
     content = replace_str(content, '<script(.|\n)*?</script>')

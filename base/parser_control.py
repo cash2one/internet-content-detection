@@ -8,10 +8,8 @@ Created on 2017-01-03 16:06
 '''
 import sys
 sys.path.append('..')
-import init
 import utils.tools as tools
 from utils.log import log
-from base.collector import Collector
 import threading
 import time
 
