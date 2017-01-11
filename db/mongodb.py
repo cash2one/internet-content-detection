@@ -2,7 +2,7 @@
 '''
 Created on 2016-11-16 16:25
 ---------
-@summary: 连接数据库
+@summary: 操作mongo数据库
 ---------
 @author: Boris
 '''
@@ -30,9 +30,14 @@ class MongoDB(Singleton):
         super(MongoDB, self).__init__()
 
         if not hasattr(self,'_db'):
-            log.debug('连接到数据库 %s'%db)
-            with pymongo.MongoClient(ip, port) as client:
-                self._db = client[db]
+            try:
+                with pymongo.MongoClient(ip, port) as client:
+                    self._db = client[db]
+            except Exception as e:
+                raise
+            else:
+                log.debug('连接到数据库 %s'%db)
+
 
     def get_db(self):
         return self._db
