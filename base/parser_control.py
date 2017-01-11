@@ -31,7 +31,6 @@ class  PaserControl(threading.Thread):
 
                 # 判断是否结束
                 if self._collector.is_finished():
-                    log.debug("-------------- 结束 --------------")
                     break
 
                 for url in urls:

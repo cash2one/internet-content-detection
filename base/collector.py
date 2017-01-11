@@ -38,6 +38,8 @@ class Collector(threading.Thread):
         #初始时将正在做的任务至为未做
         self._db.update(self._tab_urls, {'status':Constance.DOING}, {'status':Constance.TODO})
 
+        self._finished_callback = None
+
     def run(self):
         while not self._thread_stop:
             self.__input_data()
@@ -45,6 +47,9 @@ class Collector(threading.Thread):
 
     def stop(self):
         self._thread_stop = True
+
+        if self._finished_callback:
+            self._finished_callback()
 
     @tools.log_function_time
     def __input_data(self):
@@ -75,6 +80,10 @@ class Collector(threading.Thread):
     def is_finished(self):
         return self._thread_stop
 
+    def add_finished_callback(self, callback):
+        self._finished_callback = callback
+
+    # 没有可做的url
     def is_all_have_done(self):
         if self.get_max_read_size() == 0:
             self._null_times += 1

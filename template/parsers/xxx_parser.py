@@ -23,8 +23,14 @@ def add_site_info():
 
 
 @tools.run_safe_model
-def add_root_url():
-    log.debug('添加根url')
+def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = []):
+    log.debug('''
+        添加根url
+        search_keyword1 = %s
+        search_keyword2 = %s
+        search_keyword3 = %s
+        '''%(str(search_keyword1), str(search_keyword2), str(search_keyword3)))
+
     url = 'http://www.taobao.com'
     base_parser.add_url('template_urls', SITE_ID, url)
 

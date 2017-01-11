@@ -89,3 +89,15 @@ class OracleDB(Singleton):
     def close(self):
         self.cursor.close()
         self.conn.close()
+
+# db = OracleDB()
+# sql =  'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select task_id from TAB_IVMS_TASK_INFO where task_status = 501)'
+# result = db.find(sql)
+# for x in result:
+#     print(x)
+
+
+# 12468 MainThread 2017-01-10 17:59:48 oracledb.py __init__ [line:41] DEBUG 连接到数据库 orcl
+# (2, 1, '颐和园', '郝蕾', '景点')
+# (1, 1, '色戒', '汤唯,梁朝伟', '苍井空')
+# [Finished in 0.9s]
