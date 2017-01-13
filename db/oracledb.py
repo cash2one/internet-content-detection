@@ -52,18 +52,19 @@ class OracleDB(Singleton):
     def add(self, sql):
         try:
             self.cursor.execute(sql)
-            insert_id = self.cursor.lastrowid
             self.conn.commit()
-        except:
+        except Exception as e:
+            log.error(e)
             return False
         else:
-            return insert_id
+            return True
 
     def update(self, sql):
         try:
             self.cursor.execute(sql)
             self.conn.commit()
         except:
+            log.error(e)
             return False
         else:
             return True
@@ -73,6 +74,7 @@ class OracleDB(Singleton):
             self.cursor.execute(sql)
             self.conn.commit()
         except:
+            log.error(e)
             return False
         else:
             return True
@@ -83,21 +85,11 @@ class OracleDB(Singleton):
             self.cursor.execute(sql)
             self.conn.commit()
 
-        except:
-            log.error("%s表中%s有重复的数据, 请先去重" % (table, key))
+        except Exception as e:
+            log.error(table + ' ' + str(e) + ' key = '+ key)
+        else:
+            log.debug('%s表创建唯一索引成功 索引为 %s'%(table, key))
 
     def close(self):
         self.cursor.close()
         self.conn.close()
-
-# db = OracleDB()
-# sql =  'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select task_id from TAB_IVMS_TASK_INFO where task_status = 501)'
-# result = db.find(sql)
-# for x in result:
-#     print(x)
-
-
-# 12468 MainThread 2017-01-10 17:59:48 oracledb.py __init__ [line:41] DEBUG 连接到数据库 orcl
-# (2, 1, '颐和园', '郝蕾', '景点')
-# (1, 1, '色戒', '汤唯,梁朝伟', '苍井空')
-# [Finished in 0.9s]

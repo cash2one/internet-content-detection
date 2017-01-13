@@ -15,6 +15,8 @@ from db.oracledb import OracleDB
 from db.mysqldb import MysqlDB
 from utils.log import log
 import utils.tools as tools
+import os
+os.environ['nls_lang'] = 'AMERICAN_AMERICA.AL32UTF8'   # 插入数据时编码错误 加上这句解决 设置客户端编码
 
 class ExportData():
     def __init__(self, source_table, aim_table, key_map, unique_key = None):
@@ -83,7 +85,7 @@ class ExportData():
             values = []
             for i in range(len(keys)):
                 if value_types[i] == 'str':
-                    values.append(data[keys[i]])
+                    values.append(data[keys[i]].replace("'", "''"))  # 将单引号替换成两个单引号 否者sql语句语法出错
                     sql += "'%s', "
 
                 elif value_types[i] == 'int':
@@ -128,18 +130,7 @@ class ExportData():
             log.debug(sql)
             if self._aim_db.add(sql):
                 self._export_count += 1
+                self._mongodb.update(self._source_table, data, {'read_status':1})
 
         self._aim_db.close()
         log.debug('共导出%d条数据'%self._export_count)
-
-
-# key_map = {
-#             'aim_id'   : 'vint_1111',              # 目标键 = 值
-#             'aim_key2' : 'str_video_license',       # 目标键 = 源键对应的值 类型为str
-#             'aim_key3' : 'int_site_id',       # 目标键 = 源键对应的值 类型为int
-#             'aim_key4' : 'date_record_time',      # 目标键 = 源键对应的值 类型为date
-#             'aim_key5' : 'sint_select id from xxx' # 目标键 = 值为sql 查询出的结果
-#         }
-
-# export = ExportData('template_site_info', 'aim_table', key_map)
-# export.export_to_oracle()

@@ -52,18 +52,19 @@ class MysqlDB(Singleton):
     def add(self, sql):
         try:
             self.cursor.execute(sql)
-            insert_id = self.cursor.lastrowid
             self.conn.commit()
-        except:
+        except Exception as e:
+            log.error(e)
             return False
         else:
-            return insert_id
+            return True
 
     def update(self, sql):
         try:
             self.cursor.execute(sql)
             self.conn.commit()
         except:
+            log.error(e)
             return False
         else:
             return True
@@ -73,6 +74,7 @@ class MysqlDB(Singleton):
             self.cursor.execute(sql)
             self.conn.commit()
         except:
+            log.error(e)
             return False
         else:
             return True
@@ -83,8 +85,10 @@ class MysqlDB(Singleton):
             self.cursor.execute(sql)
             self.conn.commit()
 
-        except:
-            log.error("%s表中%s有重复的数据, 请先去重" % (table, key))
+        except Exception as e:
+            log.error(table + ' ' + str(e) + ' key = '+ key)
+        else:
+            log.debug('%s表创建唯一索引成功 索引为 %s'%(table, key))
 
     def close(self):
         self.cursor.close()
