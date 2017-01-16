@@ -27,13 +27,6 @@ import execjs   # pip install PyExecJS
 TIME_OUT = 30
 TIMER_TIME = 5
 
-def get_tag(html, name=None, attrs={}, find_all = True):
-    if html:
-        soup = BeautifulSoup(html, "html.parser") if isinstance(html, str) else html
-        return soup.find_all(name, attrs) if find_all else soup.find(name, attrs)
-    else:
-        return ''
-
 # 装饰器
 def log_function_time(func):
     try:
@@ -57,7 +50,7 @@ def run_safe_model(func):
             try:
                 callfunc = func(*args, **kw)
             except Exception as e:
-                log.error(e)
+                log.error(func.__name__ + " " + str(e))
             return callfunc
         return run_func
     except Exception as e:
@@ -190,6 +183,13 @@ def get_info(html,regexs, allow_repeat = False):
 
 def get_domain(url):
     return get_tld(url)
+
+def get_tag(html, name=None, attrs={}, find_all = True):
+    if html:
+        soup = BeautifulSoup(html, "html.parser") if isinstance(html, str) else html
+        return soup.find_all(name, attrs) if find_all else soup.find(name, attrs)
+    else:
+        return ''
 
 def get_text(soup, *args):
     try:

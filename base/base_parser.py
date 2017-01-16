@@ -13,6 +13,23 @@ from db.mongodb import MongoDB
 
 db = MongoDB()
 
+def is_desired_results(title, content, key1, key2, key3):
+    title = title + content
+
+    if tools.get_info(title,key3):
+        return False
+
+    # for key in key1:
+    #     if not tools.re.compile(key).findall(title):
+    #         return False
+
+    key = key1 + key2
+    if tools.get_info(title,key):
+        return True
+    else:
+        return False
+
+
 def get_site_id(table, site_name):
     result = db.find(table, {'name':site_name})
     if result:
@@ -61,7 +78,7 @@ def add_content_info(table, site_id, url='', title='', content='',
                      watched_count='', comment_count='', share_count='',
                      praise_count='', release_time='',file_size='',
                      file_name='',magnet_link='',download_count='',
-                     reposts_count='',attitudes_count='',video_pic=''):
+                     reposts_count='',attitudes_count='',video_pic='',search_type=''):
     '''
     @summary: 添加网站信息
     ---------
@@ -111,6 +128,7 @@ def add_content_info(table, site_id, url='', title='', content='',
         'reposts_count':reposts_count,
         'attitudes_count':attitudes_count,
         'video_pic':video_pic,
+        'search_type':search_type,
         'read_status':0,
         'record_time': tools.get_current_date()
     }
