@@ -6,6 +6,9 @@ Created on 2017-01-03 11:05
 ---------
 @author: Boris
 '''
+import sys
+sys.path.append('..')
+import init
 
 import base.constance as Constance
 import utils.tools as tools
@@ -29,6 +32,71 @@ def is_desired_results(title, content, key1, key2, key3):
     else:
         return False
 
+def is_have_video_by_site(url):
+    '''
+    @summary: 根据特定网站的特征来判断
+    ---------
+    @param url:
+    ---------
+    @result:
+    '''
+
+    domain = tools.get_domain(url)
+
+    feas = db.find('FeaVideo_site', {'domain':domain})
+
+    for fea in feas:
+        video_fea = fea['video_fea'].split(',')
+
+        if tools.get_info(url, video_fea):
+            return True
+
+    return False
+
+def is_have_video_by_judge(title, content):
+    '''
+    @summary: 根据title 和 content 来判断 （正负极）
+    ---------
+    @param title:
+    @param content:
+    ---------
+    @result:
+    '''
+
+    text = title + content
+
+    feas = db.find('FeaVideo_judge')
+
+    for fea in feas:
+        not_video_fea = fea['not_video_fea'].split(',')
+        video_fea = fea['video_fea'].split(',')
+
+        if tools.get_info(text, not_video_fea):
+            return False
+
+        if tools.get_info(text, video_fea):
+            return True
+
+    return False
+
+def is_have_video_by_common(html):
+    '''
+    @summary: 根据html源码来判断
+    ---------
+    @param html: html源码
+    ---------
+    @result:
+    '''
+
+    feas = db.find('FeaVideo_common')
+
+    for fea in feas:
+        video_fea = fea['video_fea'].split(',')
+
+        if tools.get_info(html, video_fea):
+            return True
+
+    return False
 
 def get_site_id(table, site_name):
     result = db.find(table, {'name':site_name})

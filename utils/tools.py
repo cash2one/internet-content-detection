@@ -167,8 +167,11 @@ _regexs = {}
 def get_info(html,regexs, allow_repeat = False):
     regexs = isinstance(regexs, str) and [regexs] or regexs
 
+    infos = []
     for regex in regexs:
         try:
+            if regex == '':
+                continue
             infos = _regexs[regex].findall(str(html))
         except:
             _regexs[regex] = re.compile(regex, re.S)
