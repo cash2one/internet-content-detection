@@ -249,15 +249,15 @@ def parser(url_info):
                 print('点赞数：' + str(attitudes_count))
                 print('--------------------')
 
-                is_desired_results = base_parser.is_desired_results('', content,remark['search_keyword1'],
+                contained_key, contained_key_count = base_parser.get_contained_key('', content,remark['search_keyword1'],
                                                     remark['search_keyword2'],remark['search_keyword3'])
-                if not is_desired_results:
+                if not contained_key:
                     continue
 
                 base_parser.add_content_info('VA_content_info', SITE_ID, url=url, release_time=release_time,
                                              origin=origin,title=content, reposts_count=reposts_count,
                                              comment_count=comment_count,attitudes_count=attitudes_count,
-                                             author=author,video_pic=video_pic,video_url=video_url,search_type=search_type)
+                                             author=author,video_pic=video_pic,video_url=video_url,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
         except:
             pass
     base_parser.update_url('VA_urls', root_url, Constance.DONE)

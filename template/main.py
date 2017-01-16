@@ -11,6 +11,7 @@ import time
 from template.parsers import *
 def main():
     search_task_sleep_time = int(tools.get_conf_value('config.conf', 'task', 'search_task_sleep_time'))
+    # 更新任务状态 正在做的更新为等待
     while True:
         # 查询任务状态 有正在做的 sleep contine
         # TODO

@@ -3,5 +3,5 @@ __all__ = [
     'magnet_parser',
     'netdisk_parser',
     'weibo_parser',
-    'wx_parser',
+    'wechat_parser',
  ]

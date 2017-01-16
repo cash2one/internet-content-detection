@@ -16,21 +16,27 @@ from db.mongodb import MongoDB
 
 db = MongoDB()
 
-def is_desired_results(title, content, key1, key2, key3):
-    title = title + content
+def get_contained_key(title, content, key1, key2, key3):
+    text = title + content
 
-    if tools.get_info(title,key3):
+    # 过滤
+    if tools.get_info(text, key3):
         return False
 
-    # for key in key1:
-    #     if not tools.re.compile(key).findall(title):
-    #         return False
+    # 取包含的关键字
+    contained_key = ''
+    contained_key_count = 0
 
-    key = key1 + key2
-    if tools.get_info(title,key):
-        return True
-    else:
-        return False
+    keys = key1 + key2
+
+    for key in keys:
+        if key == '':
+            continue
+        if text.find(key) != -1:
+            contained_key += key + ','
+            contained_key_count += 1
+
+    return contained_key[:-1], contained_key_count
 
 def is_have_video_by_site(url):
     '''
@@ -146,7 +152,7 @@ def add_content_info(table, site_id, url='', title='', content='',
                      watched_count='', comment_count='', share_count='',
                      praise_count='', release_time='',file_size='',
                      file_name='',magnet_link='',download_count='',
-                     reposts_count='',attitudes_count='',video_pic='',search_type=''):
+                     reposts_count='',attitudes_count='',video_pic='',search_type='', keyword = '', keyword_count = 0):
     '''
     @summary: 添加网站信息
     ---------
@@ -198,7 +204,9 @@ def add_content_info(table, site_id, url='', title='', content='',
         'video_pic':video_pic,
         'search_type':search_type,
         'read_status':0,
-        'record_time': tools.get_current_date()
+        'record_time': tools.get_current_date(),
+        'keyword':keyword,
+        'keyword_count':keyword_count
     }
     db.add(table, site_info)
 

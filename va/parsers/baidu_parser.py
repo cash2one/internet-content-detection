@@ -39,7 +39,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
 
     for i in search_keyword:
         for num in range(0, 750, 50):
-            link = "http://news.baidu.com/ns?word=%s&pn=%s&cl=2&ct=1&tn=news&rn=50&ie=utf-8&bt=0&et=0" % (i, num)
+            link = "http://news.baidu.com/ns?word=%s%s&pn=%s&cl=2&ct=1&tn=news&rn=50&ie=utf-8&bt=0&et=0" % (i,' 视频', num)
             link = tools.quote(link, safe='#/:?=&%')
             base_parser.add_url('VA_urls', SITE_ID, link, remark=remark)
 
@@ -54,41 +54,65 @@ def parser(url_info):
     remark = url_info['remark']
 
     html = tools.get_html_by_webdirver(root_url)
-    headers = tools.get_tag(html,'h3', {'class': 'c-title'})
-    ps = tools.get_tag(html,'p', {'class': 'c-author'})
-    abstracts = tools.re.compile('</p>(.+?)<span class="c-info">').findall(str(html))
+    headers = tools.get_tag(html,'h3', {'class': 't'})
+
     for i in range(0, len(headers)):
-        headers[i].get_text()
-        date = tools.time.strftime("%Y-%m-%d %H:%M", tools.time.localtime(tools.time.time()))
-        abstracts[i] = abstracts[i].replace('<em>', '')
-        abstracts[i] = abstracts[i].replace('</em>', '')
-        print(headers[i].get_text())
-        issue_info = ps[i].get_text().split()
-        issue_author = issue_info[0]
-        issue_time = " ".join(issue_info[1:])
-        issue_time = issue_time.replace('年', '-').replace('月', '-').replace('日', '')
-        print(date)
-        print(issue_time)
-        if tools.re.compile('小时前').findall(issue_time):
-            nhours = tools.re.compile('(\d+)小时前').findall(issue_time)
-            hours_ago = (tools.datetime.datetime.now() - tools.datetime.timedelta(hours=int(nhours[0])))
-            issue_time = hours_ago.strftime("%Y-%m-%d %H:%M")
-        if tools.re.compile('分钟前').findall(issue_time):
-            nminutes = tools.re.compile('(\d+)分钟前').findall(issue_time)
-            minutes_ago = (tools.datetime.datetime.now() - tools.datetime.timedelta(minutes=int(nminutes[0])))
-            issue_time = minutes_ago.strftime("%Y-%m-%d %H:%M")
+        title = tools.get_text(headers[i])
+        title = tools.del_html_tag(title)
+        if tools.re.compile('的相关视频在线观看_百度视频').findall(title):
+            continue
+        print(title)
+        ssurl = headers[i].a["href"]
+        r = tools.requests.head(ssurl)
+        url = r.headers['Location']
+        print(url)
+        try:
+            img = headers[i].next_sibling()[0].img['src']
+        except:
+            img = ''
+        print(img)
+        try:
+            release_time = headers[i].next_sibling()[0]
+            release_time = ''.join(tools.re.compile('\d\d\d\d年\d+?月\d+?日').findall(str(release_time)))
+            if not release_time:
+                release_time = headers[i].next_sibling()[1]
+                release_time = ''.join(tools.re.compile('\d\d\d\d年\d+?月\d+?日').findall(str(release_time)))
+                if not release_time:
+                    release_time = headers[i].next_sibling()[2]
+                    release_time = ''.join(tools.re.compile('\d\d\d\d年\d+?月\d+?日').findall(str(release_time)))
+                    if not release_time:
+                        release_time = headers[i].next_sibling()[3]
+                        release_time = ''.join(tools.re.compile('\d\d\d\d年\d+?月\d+?日').findall(str(release_time)))
+            release_time = release_time.replace('年','-').replace('月','-').replace('日','')
+        except:
+            release_time = ''
+        print(release_time)
 
-        print(issue_author + '           ' + issue_time)
-        print(abstracts[i])
+        for content in headers[i].next_sibling():
+            content = tools.get_tag(content,'div',{'class': 'c-abstract'},find_all=False)
+            if content:
+                content = tools.get_text(content)
+                break
+        print(content)
 
-        is_desired_results = base_parser.is_desired_results(headers[i].get_text(),abstracts[i],remark['search_keyword1'],
+        contained_key, contained_key_count = base_parser.get_contained_key(title,content,remark['search_keyword1'],
                                                remark['search_keyword2'],remark['search_keyword3'])
-        if not is_desired_results:
+        if not contained_key:
             continue
 
-        base_parser.add_content_info('VA_content_info',SITE_ID,url=headers[i].a['href'],
-                                     title=headers[i].get_text(),content=abstracts[i],
-                                     origin=issue_author,release_time=issue_time,search_type=search_type)
+        is_video1 = base_parser.is_have_video_by_site(url)
+        if not is_video1:
+            is_video2 = base_parser.is_have_video_by_judge(title, content)
+            if not is_video2:
+                html2 = tools.get_html_by_requests(url)
+                is_video3 = base_parser.is_have_video_by_common(html2)
+                if not is_video3:
+                    continue
+
+
+        base_parser.add_content_info('VA_content_info',SITE_ID,url=url,
+                                     title=title,content=content,image_url=img,
+                                     release_time=release_time,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
     base_parser.update_url('VA_urls'  , root_url, Constance.DONE)
     # # 解析
     # html, request = tools.get_html_by_requests(root_url)

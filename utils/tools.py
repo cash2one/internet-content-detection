@@ -101,12 +101,16 @@ def get_html_by_webdirver(url):
     return html
 
 @log_function_time
-def get_html_by_requests(url, code = 'utf-8'):
+def get_html_by_requests(url, headers = '', code = 'utf-8'):
     html = None
     if not url.endswith('.exe') and not url.endswith('.EXE'):
         r = None
         try:
-            r = requests.get(url, timeout = TIME_OUT)
+            if headers:
+                r = requests.get(url, headers = headers, timeout = TIME_OUT)
+            else:
+                r = requests.get(url, timeout = TIME_OUT)
+
             if code:
                 r.encoding = code
             html = r.text
@@ -188,11 +192,16 @@ def get_domain(url):
     return get_tld(url)
 
 def get_tag(html, name=None, attrs={}, find_all = True):
-    if html:
-        soup = BeautifulSoup(html, "html.parser") if isinstance(html, str) else html
-        return soup.find_all(name, attrs) if find_all else soup.find(name, attrs)
-    else:
-        return ''
+    try:
+        if html:
+            soup = BeautifulSoup(html, "html.parser") if isinstance(html, str) else html
+            result = soup.find_all(name, attrs) if find_all else soup.find(name, attrs)
+            return result if result else ['']
+        else:
+            return ['']
+    except Exception as e:
+        log.error(e)
+        return ['']
 
 def get_text(soup, *args):
     try:

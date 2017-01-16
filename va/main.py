@@ -14,6 +14,9 @@ def main():
     log.info('\n********** VA begin **********')
     search_task_sleep_time = int(tools.get_conf_value('config.conf', 'task', 'search_task_sleep_time'))
     db = OracleDB()
+    #  更新任务状态 正在做的更新为等待
+    sql = 'update tab_ivms_task_info set task_status = 501 where task_status = 502'
+    db.update(sql)
     while True:
         sql = 'select t.* from TAB_IVMS_TASK_INFO t where task_status = 502'
         do_task = db.find(sql, fetch_one=True)
@@ -37,9 +40,9 @@ def main():
             result[3] += r[3] + ","
             result[4] += r[4] + ","
 
-        search_keyword1 = result[2][:-2]
-        search_keyword2 = result[3][:-2]
-        search_keyword3 = result[4][:-2]
+        search_keyword1 = result[2][:-1].split(',')
+        search_keyword2 = result[3][:-1].split(',')
+        search_keyword3 = result[4][:-1].split(',')
         task_id = result[1]
 
         def begin_callback():
@@ -64,7 +67,9 @@ def main():
                 'release_date': 'date_release_time',
                 'image_url': 'str_video_url',
                 'program_content':'str_content',
-                'task_id': 'vint_%d' % task_id
+                'task_id': 'vint_%d' % task_id,
+                'keyword':'str_keyword',
+                'keyword_count':'int_keyword_count'
             }
 
             export = ExportData('VA_content_info', 'tab_ivms_program_info', key_map, 'program_url')
@@ -81,7 +86,7 @@ def main():
         spider.add_parser(magnet_parser)
         spider.add_parser(netdisk_parser)
         spider.add_parser(weibo_parser)
-        spider.add_parser(wx_parser)
+        spider.add_parser(wechat_parser)
 
         spider.start()
 

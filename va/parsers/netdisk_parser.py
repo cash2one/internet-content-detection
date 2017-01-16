@@ -85,15 +85,15 @@ def parser(url_info):
             download_count = tools.del_html_tag(''.join(tools.get_info(info, '下载次数:(.+?)\.')))
             print(download_count + '\n')
 
-            is_desired_results = base_parser.is_desired_results(title, '',
+            contained_key, contained_key_count = base_parser.get_contained_key(title, '',
                                                                 remark['search_keyword1'],
                                                                 remark['search_keyword2'], remark['search_keyword3'])
-            if not is_desired_results:
+            if not contained_key:
                 continue
 
             base_parser.add_content_info('VA_content_info', SITE_ID, url, title, file_size=file_size,
                                          file_name=file_name, author=author, release_time=release_time,
-                                         download_count=download_count,search_type=search_type)
+                                         download_count=download_count,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
     # # 解析
     # html, request = tools.get_html_by_requests(root_url)

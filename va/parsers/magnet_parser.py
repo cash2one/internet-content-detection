@@ -88,13 +88,13 @@ def parser(url_info):
         # content = tools.del_html_tag(content)
         # print(content)
 
-        is_desired_results = base_parser.is_desired_results(title, '',remark['search_keyword1'],
+        contained_key, contained_key_count = base_parser.get_contained_key(title, '',remark['search_keyword1'],
                                                             remark['search_keyword2'], remark['search_keyword3'])
-        if not is_desired_results:
+        if not contained_key:
             continue
 
         base_parser.add_content_info('VA_content_info', SITE_ID,url,title,file_size=file_size,
-                                     watched_count=watched_count,magnet_link=magnet_link,search_type=search_type)
+                                     watched_count=watched_count,magnet_link=magnet_link,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
 
     # # 解析
