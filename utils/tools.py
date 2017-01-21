@@ -42,21 +42,28 @@ def log_function_time(func):
         log.debug('求取时间无效 因为函数参数不符')
         return func
 
-def run_safe_model(func):
-    try:
-        @functools.wraps(func)  #将函数的原来属性付给新函数
-        def run_func(*args, **kw):
-            callfunc = ''
-            try:
-                callfunc = func(*args, **kw)
-            except Exception as e:
-                log.error(func.__name__ + " " + str(e))
-            return callfunc
-        return run_func
-    except Exception as e:
-        log.error(func.__name__ + " " + str(e))
-        return func
+def run_safe_model(module_name):
+    def inner_run_safe_model(func):
+        try:
+            @functools.wraps(func)  #将函数的原来属性付给新函数
+            def run_func(*args, **kw):
+                callfunc = ''
+                try:
+                    callfunc = func(*args, **kw)
+                except Exception as e:
+                    log.error(module_name + ": " + func.__name__ + " - " + str(e))
+                return callfunc
+            return run_func
+        except Exception as e:
+            log.error(module_name + ": " + func.__name__ + " - " + str(e))
+            return func
+    return inner_run_safe_model
 #######################################################
+@run_safe_model
+def test():
+    print(1/0)
+
+test()
 
 @log_function_time
 def get_html_by_urllib(url, code = 'utf-8'):

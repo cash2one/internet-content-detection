@@ -9,7 +9,7 @@ from utils.log import log
 SITE_ID = 1
 NAME = '淘宝'
 
-@tools.run_safe_model
+@tools.run_safe_model(__name__)
 def add_site_info():
     log.debug('添加网站信息')
     site_id = SITE_ID
@@ -20,7 +20,7 @@ def add_site_info():
     base_parser.add_website_info(table, site_id, url, name)
 
 
-@tools.run_safe_model
+@tools.run_safe_model(__name__)
 def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = []):
     log.debug('''
         添加根url
@@ -34,7 +34,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
 
     pass
 
-@tools.run_safe_model
+@tools.run_safe_model(__name__)
 def parser(url_info):
     log.debug('处理 ' + tools.dumps_json_(url_info))
 

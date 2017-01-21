@@ -18,7 +18,7 @@ HEADER = {
     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'
 }
 
-@tools.run_safe_model
+@tools.run_safe_model(__name__)
 def add_site_info():
     log.debug('添加网站信息')
 
@@ -34,7 +34,7 @@ def add_site_info():
     base_parser.add_website_info(table, site_id, url, name, ip = ip, address = address, icp = icp, public_safety = public_safety)
 
 
-@tools.run_safe_model
+@tools.run_safe_model(__name__)
 def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = []):
     log.debug('''
         添加根url
@@ -56,7 +56,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
 
 
 
-@tools.run_safe_model
+@tools.run_safe_model(__name__)
 def parser(url_info):
     log.debug('处理 ' + tools.dumps_json_(url_info))
 
@@ -82,8 +82,10 @@ def parser(url_info):
 
         # url
         url = tools.get_tag(news, name = 'h3')[0]
-        if url:
+        try:
             url = tools.get_json_value(url.a, 'href')
+        except:
+            url = ''
 
         # 标题
         title = tools.get_tag(news, name = 'h3')[0]

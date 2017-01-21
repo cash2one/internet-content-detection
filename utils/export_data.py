@@ -63,7 +63,7 @@ class ExportData():
         self._aim_db = MysqlDB()
         self.__export()
 
-    # @tools.run_safe_model
+    # @tools.run_safe_model(__name__)
     def __export(self):
         if self._unique_key:
             self._aim_db.set_unique_key(self._aim_table, self._unique_key)
@@ -132,5 +132,5 @@ class ExportData():
                 self._export_count += 1
                 self._mongodb.update(self._source_table, data, {'read_status':1})
 
-        self._aim_db.close()
+        # self._aim_db.close()
         log.debug('共导出%d条数据'%self._export_count)

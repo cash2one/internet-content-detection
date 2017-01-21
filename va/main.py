@@ -11,14 +11,14 @@ import time
 # 需配置
 from va.parsers import *
 def main():
-    log.info('\n********** VA begin **********')
     search_task_sleep_time = int(tools.get_conf_value('config.conf', 'task', 'search_task_sleep_time'))
     db = OracleDB()
     #  更新任务状态 正在做的更新为等待
-    sql = 'update tab_ivms_task_info set task_status = 501 where task_status = 502'
+    sql = 'update tab_ivms_task_info t set t.task_status = 501 where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time'
     db.update(sql)
     while True:
-        sql = 'select t.* from TAB_IVMS_TASK_INFO t where task_status = 502'
+        # 查看是否有正在执行的任务
+        sql = 'select t.* from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time and t.task_status = 502'
         do_task = db.find(sql, fetch_one=True)
         if do_task:
             time.sleep(search_task_sleep_time)
@@ -26,7 +26,7 @@ def main():
 
         # 查任务
         log.debug('查询任务...')
-        sql = 'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select task_id from TAB_IVMS_TASK_INFO where task_status = 501)'
+        sql = 'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select t.task_id from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time and t.task_status = 501)'
         results = list(db.find(sql))
         if not results:
             time.sleep(search_task_sleep_time)
@@ -46,13 +46,13 @@ def main():
         task_id = result[1]
 
         def begin_callback():
-            log.info('\n********** template begin **********')
+            log.info('\n********** VA begin **********')
             # 更新任务状态 正在做
             sql = 'update TAB_IVMS_TASK_INFO set task_status = 502 where task_id = %d'%task_id
             db.update(sql)
 
         def end_callback():
-            log.info('\n********** template end **********')
+            log.info('\n********** VA end **********')
 
             # 更新任务状态 做完
             sql = 'update TAB_IVMS_TASK_INFO set task_status = 503 where task_id = %d'%task_id
