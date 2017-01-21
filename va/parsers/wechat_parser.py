@@ -132,6 +132,3 @@ def parser(url_info):
                                      watched_count = watched_count, search_type=SEARCH_TYPE, keyword = contained_key, keyword_count = contained_key_count)
 
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
-
-# url_info = {'url':'http://weixin.sogou.com/weixin?type=2&query=小罗恶搞', 'depth':0, 'site_id':1, 'remark':''}
-# parser(url_info)

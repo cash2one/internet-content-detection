@@ -62,7 +62,10 @@ def parser(url_info):
         if tools.re.compile('的相关视频在线观看_百度视频').findall(title):
             continue
         print(title)
-        ssurl = headers[i].a["href"]
+        try:
+            ssurl = headers[i].a["href"]
+        except:
+            continue
         r = tools.requests.head(ssurl)
         url = r.headers['Location']
         print(url)

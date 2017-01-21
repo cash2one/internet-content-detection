@@ -59,11 +59,6 @@ def run_safe_model(module_name):
             return func
     return inner_run_safe_model
 #######################################################
-@run_safe_model
-def test():
-    print(1/0)
-
-test()
 
 @log_function_time
 def get_html_by_urllib(url, code = 'utf-8'):

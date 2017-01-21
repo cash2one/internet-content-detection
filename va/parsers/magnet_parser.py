@@ -58,8 +58,10 @@ def parser(url_info):
     for i in range(0, len(titles)):
         title = tools.get_text(titles[i])
         title = tools.del_html_tag(title)
-
-        url = titles[i].a['href']
+        try:
+            url = titles[i].a['href']
+        except:
+            continue
         url = 'http://www.bturls.net' + url
 
         release_time = video_infos[i].span

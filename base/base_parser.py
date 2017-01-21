@@ -21,7 +21,7 @@ def get_contained_key(title, content, key1, key2, key3):
 
     # 过滤
     if tools.get_info(text, key3):
-        return False
+        return '', 0
 
     # 取包含的关键字
     contained_key = ''
