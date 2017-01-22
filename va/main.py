@@ -12,38 +12,55 @@ import time
 from va.parsers import *
 def main():
     search_task_sleep_time = int(tools.get_conf_value('config.conf', 'task', 'search_task_sleep_time'))
+
     db = OracleDB()
-    #  更新任务状态 正在做的更新为等待
+
+    #  更新符合日期条件的任务状态 未做
     sql = 'update tab_ivms_task_info t set t.task_status = 501 where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time'
     db.update(sql)
+
+    # 更新关键词状态 未做
+    sql = 'update tab_ivms_task_keyword k set k.finish_status = 601 where k.task_id in (select t.task_id from tab_ivms_task_info t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time)'
+    db.update(sql)
+
     while True:
         # 查看是否有正在执行的任务
-        sql = 'select t.* from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time and t.task_status = 502'
-        do_task = db.find(sql, fetch_one=True)
+        sql = 'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select t.task_id from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time) and finish_status = 602'
+        do_task = db.find(sql, fetch_one = True)
         if do_task:
+            search_task_times = 0
             time.sleep(search_task_sleep_time)
             continue
 
         # 查任务
         log.debug('查询任务...')
-        sql = 'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select t.task_id from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time and t.task_status = 501)'
-        results = list(db.find(sql))
-        if not results:
-            time.sleep(search_task_sleep_time)
-            continue
 
-        result = [0, 0, '', '', '']
-        for r in results:
-            result[0] = r[0]
-            result[1] = r[1]
-            result[2] += r[2] + ","
-            result[3] += r[3] + ","
-            result[4] += r[4] + ","
+        sql = 'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select t.task_id from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time) and finish_status = 601'
+        result = db.find(sql, fetch_one = True)
+        if not result:
+            # time.sleep(search_task_sleep_time)
+            # continue
+            db.close()
+            break
 
-        search_keyword1 = result[2][:-1].split(',')
-        search_keyword2 = result[3][:-1].split(',')
-        search_keyword3 = result[4][:-1].split(',')
+        # result = [0, 0, '', '', '']
+        # for r in results:
+        #     result[0] = r[0]
+        #     result[1] = r[1]
+        #     result[2] += r[2] + ","
+        #     result[3] += r[3] + ","
+        #     result[4] += r[4] + ","
+
+        # search_keyword1 = result[2][:-1].split(',')
+        # search_keyword2 = result[3][:-1].split(',')
+        # search_keyword3 = result[4][:-1].split(',')
+        # task_id = result[1]
+
+        keyword_id = result[0]
         task_id = result[1]
+        search_keyword1 = result[2].split('|') if result[2] else []
+        search_keyword2 = result[3].split('|') if result[3] else []
+        search_keyword3 = result[4].split('|') if result[4] else []
 
         def begin_callback():
             log.info('\n********** VA begin **********')
@@ -51,29 +68,41 @@ def main():
             sql = 'update TAB_IVMS_TASK_INFO set task_status = 502 where task_id = %d'%task_id
             db.update(sql)
 
-        def end_callback():
-            log.info('\n********** VA end **********')
-
-            # 更新任务状态 做完
-            sql = 'update TAB_IVMS_TASK_INFO set task_status = 503 where task_id = %d'%task_id
+            # 更新关键词状态 正在做
+            sql = 'update tab_ivms_task_keyword set finish_status = 602 where id = %d'%keyword_id
             db.update(sql)
 
-            # 导出数据
-            key_map = {
-                'program_id': 'vint_sequence.nextval',
-                'search_type': 'int_search_type',
-                'program_name': 'str_title',
-                'program_url': 'str_url',
-                'release_date': 'date_release_time',
-                'image_url': 'str_video_url',
-                'program_content':'str_content',
-                'task_id': 'vint_%d' % task_id,
-                'keyword':'str_keyword',
-                'keyword_count':'int_keyword_count'
-            }
+        def end_callback():
+            # 更新关键词状态 做完
+            sql = 'update tab_ivms_task_keyword set finish_status = 603 where id = %d'%keyword_id
+            db.update(sql)
 
-            export = ExportData('VA_content_info', 'tab_ivms_program_info', key_map, 'program_url')
-            export.export_to_oracle()
+            # 如果该任务的所有关键词都做完 则更新任务状态为做完
+            sql = 'select t.* from tab_ivms_task_keyword t where task_id = %d and finish_status = 601'%task_id
+            results = db.find(sql)
+            if not results:
+                log.info('\n********** VA end **********')
+                # 更新任务状态 做完
+                sql = 'update TAB_IVMS_TASK_INFO set task_status = 503 where task_id = %d'%task_id
+                db.update(sql)
+
+                # 导出数据
+                key_map = {
+                    'program_id': 'vint_sequence.nextval',
+                    'search_type': 'int_search_type',
+                    'program_name': 'str_title',
+                    'program_url': 'str_url',
+                    'release_date': 'date_release_time',
+                    'image_url': 'str_video_url',
+                    'program_content':'str_content',
+                    'task_id': 'vint_%d' % task_id,
+                    'keyword':'str_keyword',
+                    'keyword_count':'int_keyword_count',
+                    'check_status':'vint_202'
+                }
+
+                export = ExportData('VA_content_info', 'tab_ivms_program_info', key_map, 'program_url')
+                export.export_to_oracle()
 
         # 配置spider
 

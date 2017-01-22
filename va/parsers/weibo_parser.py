@@ -185,7 +185,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
                   '&lfid=106003type%3D1&' + 'title=%s&containerid=100103type' % j + '%3D1%26q%3D' + '%s&' % j + \
                   'page=%d' % i
             url = tools.quote(url, safe='/:?=&%')
-            base_parser.add_url('VA_urls', SITE_ID, url, remark=remark)
+            if not base_parser.add_url('VA_urls', SITE_ID, url, remark=remark):
+                base_parser.update_url('VA_urls', url, Constance.TODO)
 
 
 @tools.run_safe_model(__name__)

@@ -42,7 +42,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     for j in search_keyword:
         for i in range(0, 91, 10):
             url = 'http://www.wangpansou.cn/s.php?q=%s&wp=0&start=%d' % (j, i)
-            base_parser.add_url('VA_urls', SITE_ID, url, remark=remark)
+            if not base_parser.add_url('VA_urls', SITE_ID, url, remark=remark):
+                base_parser.update_url('VA_urls', url, Constance.TODO)
 
 @tools.run_safe_model(__name__)
 def parser(url_info):
@@ -60,30 +61,33 @@ def parser(url_info):
 
     for i in range(0, len(titles)):
         #print(str(titles[i].previous_sibling.previous_sibling))
-        url = tools.get_tag(titles[i].previous_sibling.previous_sibling, 'a', find_all=False)
-        url = url['href']
-        print(url)
-        html2 = tools.get_html_by_urllib(url)
-        regexs = ['<title>(.+?)</title>']
-        mark = ''.join(tools.get_info(html2, regexs))
-        regexs = ['不存在', '取消']
-        if not tools.get_info(mark, regexs) and mark != '':
-            title = tools.get_text(titles[i].previous_sibling.previous_sibling)
-            title = tools.del_html_tag(title)
-            info = tools.get_text(titles[i])
-            print(title)
-            # print(info)
-            print('hahahahahaha  ' + url)
-            file_name = tools.del_html_tag(''.join(tools.get_info(info, '文件名:(.+?)文')))
-            print(file_name)
-            file_size = tools.del_html_tag(''.join(tools.get_info(info, '文件大小:(.+?)分')))
-            print(file_size)
-            author = tools.del_html_tag(''.join(tools.get_info(info, '分享者:(.+?)时')))
-            print(author)
-            release_time = ''.join(tools.get_info(info, '时间:(.+?)下')).replace('\n', '')
-            print(release_time)
-            download_count = tools.del_html_tag(''.join(tools.get_info(info, '下载次数:(.+?)\.')))
-            print(download_count + '\n')
+        try:
+            url = tools.get_tag(titles[i].previous_sibling.previous_sibling, 'a', find_all=False)
+            url = url['href']
+            print(url)
+            html2 = tools.get_html_by_urllib(url)
+            regexs = ['<title>(.+?)</title>']
+            mark = ''.join(tools.get_info(html2, regexs))
+            regexs = ['不存在', '取消']
+            if not tools.get_info(mark, regexs) and mark != '':
+                title = tools.get_text(titles[i].previous_sibling.previous_sibling)
+                title = tools.del_html_tag(title)
+                info = tools.get_text(titles[i])
+                print(title)
+                # print(info)
+                print('hahahahahaha  ' + url)
+                file_name = tools.del_html_tag(''.join(tools.get_info(info, '文件名:(.+?)文')))
+                print(file_name)
+                file_size = tools.del_html_tag(''.join(tools.get_info(info, '文件大小:(.+?)分')))
+                print(file_size)
+                author = tools.del_html_tag(''.join(tools.get_info(info, '分享者:(.+?)时')))
+                print(author)
+                release_time = ''.join(tools.get_info(info, '时间:(.+?)下')).replace('\n', '')
+                print(release_time)
+                download_count = tools.del_html_tag(''.join(tools.get_info(info, '下载次数:(.+?)\.')))
+                print(download_count + '\n')
+        except:
+            continue
 
             contained_key, contained_key_count = base_parser.get_contained_key(title, '',
                                                                 remark['search_keyword1'],

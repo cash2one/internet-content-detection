@@ -91,7 +91,7 @@ def get_html_by_urllib(url, code = 'utf-8'):
 
 @log_function_time
 def get_html_by_webdirver(url):
-    html = ''
+    html = None
     try:
         driver = webdriver.PhantomJS()
         driver.get(url)
@@ -100,7 +100,7 @@ def get_html_by_webdirver(url):
         driver.close()
     except Exception as e:
         log.error(e)
-    return html
+    return html and len(html) < 1024 * 1024 and html or None
 
 @log_function_time
 def get_html_by_requests(url, headers = '', code = 'utf-8'):

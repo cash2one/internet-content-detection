@@ -41,7 +41,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     for j in search_keyword:
         for i in range(1, n + 1):
             url = 'http://www.bturls.net/search/%s_ctime_%d.html' % (j, i)
-            base_parser.add_url('VA_urls', SITE_ID, url, remark=remark)
+            if not base_parser.add_url('VA_urls', SITE_ID, url, remark=remark):
+                base_parser.update_url('VA_urls', url, Constance.TODO)
 
 @tools.run_safe_model(__name__)
 def parser(url_info):

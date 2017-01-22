@@ -256,7 +256,7 @@ def add_appsite_info(table, site_id, url, name , app_url = '', summary = '', upd
 
 def add_url(table, site_id, url, depth = 0, remark = '', status = Constance.TODO):
     url_dict = {'site_id':site_id, 'url':url, 'depth':depth, 'remark':remark, 'status':status}
-    db.add(table, url_dict)
+    return db.add(table, url_dict)
 
 def update_url(table, url, status):
     db.update(table, {'url':url}, {'status':status})

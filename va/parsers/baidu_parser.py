@@ -41,7 +41,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
         for num in range(0, 750, 50):
             link = "http://news.baidu.com/ns?word=%s%s&pn=%s&cl=2&ct=1&tn=news&rn=50&ie=utf-8&bt=0&et=0" % (i,' 视频', num)
             link = tools.quote(link, safe='#/:?=&%')
-            base_parser.add_url('VA_urls', SITE_ID, link, remark=remark)
+            if not base_parser.add_url('VA_urls', SITE_ID, link, remark=remark):
+                base_parser.update_url('VA_urls', link, Constance.TODO)
 
 
 @tools.run_safe_model(__name__)

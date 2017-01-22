@@ -52,7 +52,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
         # 最多显示10页
         for page in range(1, 11):
             url += '&page=%d&ie=utf8'%page
-            base_parser.add_url('VA_urls', SITE_ID, url, remark = remark)
+            if not base_parser.add_url('VA_urls', SITE_ID, url, remark = remark):
+                base_parser.update_url('VA_urls', url, Constance.TODO)
 
 
 
