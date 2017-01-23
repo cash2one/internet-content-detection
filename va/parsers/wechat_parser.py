@@ -77,42 +77,46 @@ def parser(url_info):
 
     news_list = tools.get_tag(news_box, name = 'li')
     for news in news_list:
-        # 图片
-        image = tools.get_tag(news, name = 'img')[0]
-        image = tools.get_json_value(image, 'src')
-
-        # url
-        url = tools.get_tag(news, name = 'h3')[0]
         try:
-            url = tools.get_json_value(url.a, 'href')
+            # 图片
+            image = tools.get_tag(news, name = 'img')[0]
+            image = tools.get_json_value(image, 'src')
+
+            # url
+            url = tools.get_tag(news, name = 'h3')[0]
+            try:
+                url = tools.get_json_value(url.a, 'href')
+            except:
+                url = ''
+
+            # 标题
+            title = tools.get_tag(news, name = 'h3')[0]
+            title = tools.get_text(title)
+            title = tools.del_html_tag(title)
+
+            # 内容
+            content = tools.get_tag(news, name = 'p', attrs = {'class':"txt-info"})[0]
+            content = tools.get_text(content)
+            content = tools.del_html_tag(content)
+
+            # 观看数
+            watched_count = ''
+
+            # 来源
+            origin = tools.get_tag(news, name = 'div', attrs = {'class':"s-p"})[0]
+            origin = tools.get_info(origin, '<a.*?>(.*?)<')[0]
+
+            # 日期
+            release_time = tools.get_tag(news, name = 'div', attrs = {'class':"s-p"})[0]
+            release_time = tools.get_json_value(release_time, 't')
+            release_time = tools.timestamp_to_date(int(release_time))
+
+            # 判断是否有视频 根据视频播放图标判断
+            regex = '<div class="img-box">.*?<i></i>.*?</div>'
+            play_icon = tools.get_info(news, regex)
+
         except:
-            url = ''
-
-        # 标题
-        title = tools.get_tag(news, name = 'h3')[0]
-        title = tools.get_text(title)
-        title = tools.del_html_tag(title)
-
-        # 内容
-        content = tools.get_tag(news, name = 'p', attrs = {'class':"txt-info"})[0]
-        content = tools.get_text(content)
-        content = tools.del_html_tag(content)
-
-        # 观看数
-        watched_count = ''
-
-        # 来源
-        origin = tools.get_tag(news, name = 'div', attrs = {'class':"s-p"})[0]
-        origin = tools.get_info(origin, '<a.*?>(.*?)<')[0]
-
-        # 日期
-        release_time = tools.get_tag(news, name = 'div', attrs = {'class':"s-p"})[0]
-        release_time = tools.get_json_value(release_time, 't')
-        release_time = tools.timestamp_to_date(int(release_time))
-
-        # 判断是否有视频 根据视频播放图标判断
-        regex = '<div class="img-box">.*?<i></i>.*?</div>'
-        play_icon = tools.get_info(news, regex)
+            continue
 
         log.debug('''
             标题：   %s
@@ -127,6 +131,8 @@ def parser(url_info):
 
         contained_key, contained_key_count = base_parser.get_contained_key(title, content, remark['search_keyword1'], remark['search_keyword2'], remark['search_keyword3'])
         if not contained_key or not play_icon:
+            continue
+        if not play_icon:
             continue
 
         base_parser.add_content_info('VA_content_info', SITE_ID, url, title, content, video_pic = image, release_time = release_time, origin = origin,
