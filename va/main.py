@@ -28,7 +28,6 @@ def main():
         sql = 'select t.* from TAB_IVMS_TASK_KEYWORD t where t.task_id in (select t.task_id from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time) and finish_status = 602'
         do_task = db.find(sql, fetch_one = True)
         if do_task:
-            search_task_times = 0
             time.sleep(search_task_sleep_time)
             continue
 
@@ -58,9 +57,9 @@ def main():
 
         keyword_id = result[0]
         task_id = result[1]
-        search_keyword1 = result[2].split('|') if result[2] else []
-        search_keyword2 = result[3].split('|') if result[3] else []
-        search_keyword3 = result[4].split('|') if result[4] else []
+        search_keyword1 = result[2].split(',') if result[2] else []
+        search_keyword2 = result[3].split(',') if result[3] else []
+        search_keyword3 = result[4].split(',') if result[4] else []
 
         def begin_callback():
             log.info('\n********** VA begin **********')
@@ -107,7 +106,7 @@ def main():
         # 配置spider
 
         spider = Spider(tab_urls = 'VA_urls', tab_site = 'VA_site_info', tab_content = 'VA_content_info',
-                        parser_count = 1, begin_callback = begin_callback, end_callback = end_callback,
+                        parser_count = 10, begin_callback = begin_callback, end_callback = end_callback,
                         search_keyword1 = search_keyword1, search_keyword2 = search_keyword2, search_keyword3 = search_keyword3)
 
         # 添加parser
