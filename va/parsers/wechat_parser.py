@@ -12,7 +12,7 @@ NAME = '微信'
 SEARCH_TYPE = 105
 
 HEADER = {
-    'Cookie':'usid=_GW9W2q3bS3Gmnt8; IPLOC=CN1100; SUV=004074AAD39C8C4A582E927B4CCD4712; CXID=5D6D9135174B33DFACFC3DF1AD4DD4F8; ad=uMpvFZllll2YFL47lllllVPc6Ztlllll1ihGvkllllGlllllRylll5@@@@@@@@@@; SUID=4A8C9CD3536C860A584F61EC000B6DF9; ABTEST=3|1484546443|v1; weixinIndexVisited=1; JSESSIONID=aaa3ShvUeSm0y88RjUwMv; SNUID=C90F1F508486C5AC6461B17184780898; sct=19; td_cookie=18446744071226930631',
+    # 'Cookie':'usid=_GW9W2q3bS3Gmnt8; IPLOC=CN1100; SUV=004074AAD39C8C4A582E927B4CCD4712; CXID=5D6D9135174B33DFACFC3DF1AD4DD4F8; SUID=4A8C9CD3536C860A584F61EC000B6DF9; ABTEST=3|1484546443|v1; weixinIndexVisited=1; sct=35; td_cookie=18446744071319380747; ad=kMpvFZllll2YFL47lllllVAVuyolllll1ihGvkllllwlllllVZlll5@@@@@@@@@@; SNUID=3CFAEBA47673309C553254F5773632F4; JSESSIONID=aaaf69NvfBER-b6cKSfNv',
     'Host':'weixin.sogou.com',
     'Upgrade-Insecure-Requests':'1',
     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'
@@ -48,10 +48,11 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     search_keywords = search_keyword1 + search_keyword2
 
     for search_keyword in search_keywords:
-        url = 'http://weixin.sogou.com/weixin?type=2&query=' + search_keyword
+        if not search_keyword:
+            continue
         # 最多显示10页
         for page in range(1, 11):
-            url += '&page=%d&ie=utf8'%page
+            url = 'http://weixin.sogou.com/weixin?type=2&query=' + search_keyword + '&page=%d&ie=utf8'%page
             if not base_parser.add_url('VA_urls', SITE_ID, url, remark = remark):
                 base_parser.update_url('VA_urls', url, Constance.TODO)
 
@@ -104,7 +105,7 @@ def parser(url_info):
 
             # 来源
             origin = tools.get_tag(news, name = 'div', attrs = {'class':"s-p"})[0]
-            origin = tools.get_info(origin, '<a.*?>(.*?)<')[0]
+            origin = ''.join(tools.get_info(origin, '<a.*?>(.*?)<'))
 
             # 日期
             release_time = tools.get_tag(news, name = 'div', attrs = {'class':"s-p"})[0]
@@ -139,3 +140,17 @@ def parser(url_info):
                                      watched_count = watched_count, search_type=SEARCH_TYPE, keyword = contained_key, keyword_count = contained_key_count)
 
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
+
+url_info = {
+    'remark': {'search_keyword2': [],
+    'search_keyword1': ['世界上最危险的道路'],
+    'search_keyword3': []},
+    '_id': '58996d3fefc81c10d57a250e',
+    'site_id': 10005,
+    'status': 0,
+    'depth': 0,
+    'url': 'http://weixin.sogou.com/weixin?type=2&query=世界上最危险的道路&page=1&ie=utf8',
+}
+print(tools.dumps_json(url_info))
+parser(url_info)
+

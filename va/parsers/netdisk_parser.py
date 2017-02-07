@@ -40,6 +40,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     search_keyword = search_keyword1 + search_keyword2
 
     for j in search_keyword:
+        if not j:
+            continue
         for i in range(0, 91, 10):
             url = 'http://www.wangpansou.cn/s.php?q=%s&wp=0&start=%d' % (j, i)
             if not base_parser.add_url('VA_urls', SITE_ID, url, remark=remark):

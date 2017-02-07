@@ -113,7 +113,7 @@ def main():
 
             # 配置spider
             spider = Spider(tab_urls = 'VA_urls', tab_site = 'VA_site_info', tab_content = 'VA_content_info',
-                            parser_count = 10, begin_callback = begin_callback, end_callback = end_callback,
+                            parser_count = 1, begin_callback = begin_callback, end_callback = end_callback,
                             search_keyword1 = search_keyword1, search_keyword2 = search_keyword2, search_keyword3 = search_keyword3)
 
             # 添加parser
@@ -126,8 +126,6 @@ def main():
             spider.start()
 
             time.sleep(search_task_sleep_time)
-
-        time.sleep(search_task_sleep_time)
 
 if __name__ == '__main__':
     main()

@@ -180,6 +180,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     search_keyword = search_keyword1 + search_keyword2
 
     for j in search_keyword:
+        if not j:
+            continue
         for i in range(1, 109):
             url = 'https://m.weibo.cn/container/getIndex?type=all&queryVal=%s&luicode=10000011' % j + \
                   '&lfid=106003type%3D1&' + 'title=%s&containerid=100103type' % j + '%3D1%26q%3D' + '%s&' % j + \
@@ -211,7 +213,11 @@ def parser(url_info):
         }
     resp = tools.requests.get('%s'%root_url, headers=headers)
     infos = resp.json()
-    cards = infos['cards']
+    try:
+        cards = infos['cards']
+    except:
+        base_parser.update_url('VA_urls', root_url, Constance.DONE)
+        return
 
     for i in cards:
         try:

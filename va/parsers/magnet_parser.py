@@ -39,6 +39,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     search_keyword = search_keyword1 + search_keyword2
     n = 100
     for j in search_keyword:
+        if not j:
+            continue
         for i in range(1, n + 1):
             url = 'http://www.bturls.net/search/%s_ctime_%d.html' % (j, i)
             if not base_parser.add_url('VA_urls', SITE_ID, url, remark=remark):
