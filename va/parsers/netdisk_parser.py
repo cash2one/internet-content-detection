@@ -49,8 +49,6 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
 
 @tools.run_safe_model(__name__)
 def parser(url_info):
-    print('*******************************************************')
-    print('-------------------------------------------------------')
     log.debug('处理 ' + tools.dumps_json_(url_info))
 
     root_url = url_info['url']
@@ -62,11 +60,10 @@ def parser(url_info):
     titles = tools.get_tag(html, 'div', {'id': tools.re.compile('id_cse_content_item_mid_.')})
 
     for i in range(0, len(titles)):
-        #print(str(titles[i].previous_sibling.previous_sibling))
         try:
             url = tools.get_tag(titles[i].previous_sibling.previous_sibling, 'a', find_all=False)
             url = url['href']
-            print(url)
+
             html2 = tools.get_html_by_urllib(url)
             regexs = ['<title>(.+?)</title>']
             mark = ''.join(tools.get_info(html2, regexs))
@@ -75,21 +72,29 @@ def parser(url_info):
                 title = tools.get_text(titles[i].previous_sibling.previous_sibling)
                 title = tools.del_html_tag(title)
                 info = tools.get_text(titles[i])
-                print(title)
-                # print(info)
-                print('hahahahahaha  ' + url)
+
                 file_name = tools.del_html_tag(''.join(tools.get_info(info, '文件名:(.+?)文')))
-                print(file_name)
+
                 file_size = tools.del_html_tag(''.join(tools.get_info(info, '文件大小:(.+?)分')))
-                print(file_size)
+
                 author = tools.del_html_tag(''.join(tools.get_info(info, '分享者:(.+?)时')))
-                print(author)
+
                 release_time = ''.join(tools.get_info(info, '时间:(.+?)下')).replace('\n', '')
-                print(release_time)
+
                 download_count = tools.del_html_tag(''.join(tools.get_info(info, '下载次数:(.+?)\.')))
-                print(download_count + '\n')
+
         except:
             continue
+
+            log.debug('''
+                标题：    %s
+                文件大小：%s
+                文件名字：%s
+                作者：    %s
+                原文url： %s
+                下载数量：%s
+                日期：    %s
+                   ''' % (title, file_size, file_name, author, url, download_count, release_time))
 
             contained_key, contained_key_count = base_parser.get_contained_key(title, '',
                                                                 remark['search_keyword1'],
@@ -97,9 +102,10 @@ def parser(url_info):
             if not contained_key:
                 continue
 
-            base_parser.add_content_info('VA_content_info', SITE_ID, url, title, file_size=file_size,
-                                         file_name=file_name, author=author, release_time=release_time,
-                                         download_count=download_count,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
+            base_parser.add_content_info('VA_content_info', SITE_ID, url, title, file_size = file_size,
+                                         file_name = file_name, author = author, release_time = release_time,
+                                         download_count = download_count, search_type = search_type,
+                                         keyword = contained_key, keyword_count = contained_key_count)
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
     # # 解析
     # html, request = tools.get_html_by_requests(root_url)

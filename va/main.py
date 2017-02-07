@@ -118,10 +118,10 @@ def main():
 
             # 添加parser
             spider.add_parser(baidu_parser)
-            spider.add_parser(magnet_parser)
-            spider.add_parser(netdisk_parser)
-            spider.add_parser(weibo_parser)
-            spider.add_parser(wechat_parser)
+            # spider.add_parser(magnet_parser)
+            # spider.add_parser(netdisk_parser)
+            # spider.add_parser(weibo_parser)
+            # spider.add_parser(wechat_parser)
 
             spider.start()
 

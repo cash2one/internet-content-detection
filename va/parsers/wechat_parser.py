@@ -141,16 +141,16 @@ def parser(url_info):
 
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
 
-url_info = {
-    'remark': {'search_keyword2': [],
-    'search_keyword1': ['世界上最危险的道路'],
-    'search_keyword3': []},
-    '_id': '58996d3fefc81c10d57a250e',
-    'site_id': 10005,
-    'status': 0,
-    'depth': 0,
-    'url': 'http://weixin.sogou.com/weixin?type=2&query=世界上最危险的道路&page=1&ie=utf8',
-}
-print(tools.dumps_json(url_info))
-parser(url_info)
+# url_info = {
+#     'remark': {'search_keyword2': [],
+#     'search_keyword1': ['世界上最危险的道路'],
+#     'search_keyword3': []},
+#     '_id': '58996d3fefc81c10d57a250e',
+#     'site_id': 10005,
+#     'status': 0,
+#     'depth': 0,
+#     'url': 'http://weixin.sogou.com/weixin?type=2&query=世界上最危险的道路&page=1&ie=utf8',
+# }
+# print(tools.dumps_json(url_info))
+# parser(url_info)
 

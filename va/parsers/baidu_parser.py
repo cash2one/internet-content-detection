@@ -57,26 +57,28 @@ def parser(url_info):
     remark = url_info['remark']
 
     html = tools.get_html_by_webdirver(root_url)
+    print(html)
     headers = tools.get_tag(html,'h3', {'class': 't'})
+    print(headers)   # headers 为空 TODO
 
     for i in range(0, len(headers)):
         title = tools.get_text(headers[i])
         title = tools.del_html_tag(title)
         if tools.re.compile('的相关视频在线观看_百度视频').findall(title):
             continue
-        print(title)
+
         try:
             ssurl = headers[i].a["href"]
         except:
             continue
         r = tools.requests.head(ssurl)
         url = r.headers['Location']
-        print(url)
+
         try:
             img = headers[i].next_sibling()[0].img['src']
         except:
             img = ''
-        print(img)
+
         try:
             release_time = headers[i].next_sibling()[0]
             release_time = ''.join(tools.re.compile('\d\d\d\d年\d+?月\d+?日').findall(str(release_time)))
@@ -92,14 +94,21 @@ def parser(url_info):
             release_time = release_time.replace('年','-').replace('月','-').replace('日','')
         except:
             release_time = ''
-        print(release_time)
 
         for content in headers[i].next_sibling():
             content = tools.get_tag(content,'div',{'class': 'c-abstract'},find_all=False)
             if content:
                 content = tools.get_text(content)
                 break
-        print(content)
+
+        log.debug('''
+            标题：   %s
+            内容：   %s
+            原文url：%s
+            图片url：%s
+            日期：   %s
+               ''' % (title, content, url, img, release_time))
+
 
         contained_key, contained_key_count = base_parser.get_contained_key(title,content,remark['search_keyword1'],
                                                remark['search_keyword2'],remark['search_keyword3'])
@@ -115,13 +124,24 @@ def parser(url_info):
                 if not is_video3:
                     continue
 
-
-        base_parser.add_content_info('VA_content_info',SITE_ID,url=url,
-                                     title=title,content=content,image_url=img,
-                                     release_time=release_time,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
-    base_parser.update_url('VA_urls'  , root_url, Constance.DONE)
+        base_parser.add_content_info('VA_content_info', SITE_ID, url = url, title = title, content = content,
+                                     image_url = img, release_time = release_time, search_type = search_type,
+                                     keyword = contained_key, keyword_count = contained_key_count)
+    base_parser.update_url('VA_urls', root_url, Constance.DONE)
     # # 解析
     # html, request = tools.get_html_by_requests(root_url)
     # if not html:
     #     base_parser.update_url('urls'  , root_url, Constance.EXCEPTION)
+
+# url_info = {
+#     '_id': '5899804defc81c2539977f2c',
+#     'status': 0,
+#     'url': 'http://baidu.com/ns?word=%E4%B8%AD%E5%9B%BD%E4%BA%BA%E8%A6%81%E6%9D%A5%E4%BA%86%20%E8%A7%86%E9%A2%91&pn=0&cl=2&ct=1&tn=news&rn=150&ie=utf-8&bt=0&et=0',
+#     'remark': {'search_keyword2': [],
+#     'search_keyword1': ['中国人要来了'],
+#     'search_keyword3': []},
+#     'site_id': 10001,
+#     'depth': 0
+# }
+# parser(url_info)
 

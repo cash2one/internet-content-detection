@@ -70,7 +70,7 @@ def get_logger(name = 'log.log', path = ''):
             )
 
     #定义一个RotatingFileHandler，最多备份5个日志文件，每个日志文件最大10M
-    Rthandler = RotatingFileHandler(filename, mode = 'a',  maxBytes=10 * 1024 * 1024,backupCount=20, encoding='utf8')
+    Rthandler = RotatingFileHandler(filename, mode = 'w',  maxBytes=10 * 1024 * 1024,backupCount=20, encoding='utf8')
     Rthandler.setLevel(LOG_LEVEL)
     formatter = logging.Formatter(LOG_FORMAT)
     Rthandler.setFormatter(formatter)
@@ -79,8 +79,16 @@ def get_logger(name = 'log.log', path = ''):
 
     return logger
 
+# logging.disable(logging.DEBUG) # 关闭所有log
+
 # 不让 requests打印debug日志 看着乱
 logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
+logging.getLogger("selenium.webdriver.remote").setLevel(logging.WARNING)
+logging.getLogger("selenium.webdriver").setLevel(logging.WARNING)
+logging.getLogger("selenium").setLevel(logging.WARNING)
+
+# print(logging.Logger.manager.loggerDict) # 取使用debug模块的name
 
 #日志级别大小关系为：critical > error > warning > info > debug
 

@@ -76,30 +76,27 @@ def parser(url_info):
         watched_count = video_infos[i].span.next_sibling.next_sibling.next_sibling.next_sibling
         watched_count = tools.get_text(watched_count)
 
-        print(title + '  ' + url + '  ')
-        print(release_time)
-        print(file_size)
-        print(watched_count)
-        print(url)
         regexs = ['t/(.+?)\.']
         magnet_link = 'magnet:?xt=urn:btih:'+''.join(tools.get_info(url,regexs))
-        # html2, requests2 = tools.get_html_by_requests(url)
-        # magnet_link = tools.get_tag(html2, 'dl', find_all=False)
-        # magnet_link = tools.get_tag(magnet_link, 'a', find_all=False)
-        # magnet_link = magnet_link['href']
-        print(magnet_link)
-        # content = tools.get_tag(html2, 'ol', find_all=False)
-        # content = tools.get_text(content)
-        # content = tools.del_html_tag(content)
-        # print(content)
+
+        log.debug('''
+            标题：    %s
+            文件大小：%s
+            原文url： %s
+            观看数量：%s
+            磁力链接：%s
+            日期：    %s
+               ''' % (title, file_size, url, watched_count, magnet_link, release_time))
 
         contained_key, contained_key_count = base_parser.get_contained_key(title, '',remark['search_keyword1'],
                                                             remark['search_keyword2'], remark['search_keyword3'])
         if not contained_key:
             continue
 
-        base_parser.add_content_info('VA_content_info', SITE_ID,url,title,file_size=file_size,
-                                     watched_count=watched_count,magnet_link=magnet_link,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
+        base_parser.add_content_info('VA_content_info', SITE_ID, url, title, file_size = file_size,
+                                     release_time = release_time,watched_count = watched_count,
+                                     magnet_link = magnet_link, search_type = search_type,
+                                     keyword = contained_key, keyword_count = contained_key_count)
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
 
     # # 解析

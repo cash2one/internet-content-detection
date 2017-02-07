@@ -223,8 +223,8 @@ def parser(url_info):
         try:
             card_group = i['card_group']
             # print(card_group)
-            print('****************************')
-            print('****************************')
+            # print('****************************')
+            # print('****************************')
             for group in card_group:
                 if group['mblog']:
                     mblog = group['mblog']
@@ -243,28 +243,32 @@ def parser(url_info):
                 video_pic = get_video_pic(mblog)
                 release_time = get_release_time(mblog)
                 video_url = get_video_url(mblog)
-                print(release_time)
-                print(author)
-                print(origin)
-                print(video_pic)
-                # print(profile_image_url)
-                print(content)
-                print(page_url)
-                print(video_url)
-                print('转发数：' + str(reposts_count))
-                print('评论数：' + str(comment_count))
-                print('点赞数：' + str(attitudes_count))
-                print('--------------------')
+
+                log.debug('''
+                    内容：   %s
+                    原文url：%s
+                    作者：   %s
+                    来源：   %s
+                    视频封面:%s
+                    视频地址:%s
+                    日期：   %s
+                    转发数： %s
+                    评论数： %s
+                    点赞数： %s
+                         ''' % (content, url, author, origin, video_pic, video_url, release_time,
+                                str(reposts_count), str(comment_count), str(attitudes_count)))
 
                 contained_key, contained_key_count = base_parser.get_contained_key('', content,remark['search_keyword1'],
                                                     remark['search_keyword2'],remark['search_keyword3'])
                 if not contained_key:
                     continue
 
-                base_parser.add_content_info('VA_content_info', SITE_ID, url=url, release_time=release_time,
-                                             origin=origin,title=content, reposts_count=reposts_count,
-                                             comment_count=comment_count,attitudes_count=attitudes_count,
-                                             author=author,video_pic=video_pic,video_url=video_url,search_type=search_type, keyword = contained_key, keyword_count = contained_key_count)
+                base_parser.add_content_info('VA_content_info', SITE_ID, url = url, release_time = release_time,
+                                             origin = origin, title = content, reposts_count = reposts_count,
+                                             comment_count = comment_count, attitudes_count = attitudes_count,
+                                             author = author, video_pic = video_pic, video_url = video_url,
+                                             search_type = search_type, keyword = contained_key,
+                                             keyword_count = contained_key_count)
         except:
             pass
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
