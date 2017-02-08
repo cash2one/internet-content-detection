@@ -34,7 +34,6 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
 
     pass
 
-@tools.run_safe_model(__name__)
 def parser(url_info):
     url_info['_id'] = str(url_info['_id'])
     log.debug('处理 \n' + tools.dumps_json(url_info))
