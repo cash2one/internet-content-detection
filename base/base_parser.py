@@ -152,7 +152,8 @@ def add_content_info(table, site_id, url='', title='', content='',
                      watched_count='', comment_count='', share_count='',
                      praise_count='', release_time='',file_size='',
                      file_name='',magnet_link='',download_count='',
-                     reposts_count='',attitudes_count='',video_pic='',search_type='', keyword = '', keyword_count = 0):
+                     reposts_count='',attitudes_count='',
+                     search_type='', keyword = '', keyword_count = 0):
     '''
     @summary: 添加网站信息
     ---------
@@ -176,7 +177,6 @@ def add_content_info(table, site_id, url='', title='', content='',
     @param praise_count: 点赞数
     @param reposts_count: 转发数
     @param attitudes_count: 点赞数
-    @param video_pic: 视频封面图片链接
     ---------
     @result:
     '''
@@ -201,7 +201,6 @@ def add_content_info(table, site_id, url='', title='', content='',
         'file_name':file_name,
         'reposts_count':reposts_count,
         'attitudes_count':attitudes_count,
-        'video_pic':video_pic,
         'search_type':search_type,
         'read_status':0,
         'record_time': tools.get_current_date(),

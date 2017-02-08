@@ -30,9 +30,6 @@ def main():
         sql = 'select t.task_id from TAB_IVMS_TASK_INFO t where sysdate >= t.monitor_start_time and sysdate <= t.monitor_end_time and t.task_status = 501'
         result = db.find(sql, fetch_one = True)
         if not result:
-            # time.sleep(search_task_sleep_time)
-            # continue
-            db.close()
             break
 
         task_id = result[0]
@@ -118,10 +115,10 @@ def main():
 
             # 添加parser
             spider.add_parser(baidu_parser)
-            # spider.add_parser(magnet_parser)
-            # spider.add_parser(netdisk_parser)
-            # spider.add_parser(weibo_parser)
-            # spider.add_parser(wechat_parser)
+            spider.add_parser(magnet_parser)
+            spider.add_parser(netdisk_parser)
+            spider.add_parser(weibo_parser)
+            spider.add_parser(wechat_parser)
 
             spider.start()
 

@@ -31,7 +31,7 @@ class MysqlDB(Singleton):
     def __init__(self, ip = IP, port = PORT, db = DB, user_name = USER_NAME, user_pass = USER_PASS):
         super(MySQL, self).__init__()
 
-        if not hasattr(self,'_db'):
+        if not hasattr(self,'conn'):
             try:
                 self.conn = pymysql.connect(host = ip, port = port, user = user_name, passwd = user_pass, db = db, charset = 'utf8')
                 self.cursor = self.conn.cursor()
@@ -63,7 +63,7 @@ class MysqlDB(Singleton):
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-        except:
+        except Exception as e:
             log.error(e)
             return False
         else:
@@ -73,7 +73,7 @@ class MysqlDB(Singleton):
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-        except:
+        except Exception as e:
             log.error(e)
             return False
         else:

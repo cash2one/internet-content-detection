@@ -51,8 +51,8 @@ class Collector(threading.Thread):
 
     @tools.log_function_time
     def __input_data(self):
-        # log.debug('read_pos %d, write_pos %d buffer size %d'%(self._read_pos, self._write_pos, len(self._urls)))
-        # log.debug('buffer can write size = %d'%self.get_max_write_size())
+        log.debug('read_pos %d, write_pos %d buffer size %d'%(self._read_pos, self._write_pos, len(self._urls)))
+        log.debug('buffer can write size = %d'%self.get_max_write_size())
         if self.get_max_write_size() == 0:
             log.debug("collector 已满 size = %d"%self.get_max_read_size())
             return
@@ -65,12 +65,12 @@ class Collector(threading.Thread):
         else:
             urls_list = self._db.find(self._tab_urls, {"status":Constance.TODO}, limit = url_count)
 
-        # 存url
-        self.put_urls(urls_list)
-
         #更新已取到的url状态为doing
         for url in urls_list:
             self._db.update(self._tab_urls, url, {'status':Constance.DOING})
+
+        # 存url
+        self.put_urls(urls_list)
 
         if self.is_all_have_done():
             self.stop()

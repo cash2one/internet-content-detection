@@ -33,6 +33,8 @@ class Spider(threading.Thread):
         '''
         super(Spider, self).__init__()
 
+        self._tab_urls = tab_urls
+
         self._db = MongoDB()
         self._db.set_unique_key(tab_urls, 'url')
         self._db.set_unique_key(tab_site, 'site_id')
@@ -83,7 +85,7 @@ class Spider(threading.Thread):
             threading.Thread(target = parser.add_root_url, args = (self._search_keyword1, self._search_keyword2, self._search_keyword3)).start()
         # 启动parser control
         while self._parser_count:
-            parser_control = PaserControl(self._collector)
+            parser_control = PaserControl(self._collector, self._tab_urls)
 
             for parser in self._parsers:
                 parser_control.add_parser(parser)

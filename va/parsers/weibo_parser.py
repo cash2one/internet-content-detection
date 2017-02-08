@@ -132,7 +132,7 @@ def get_release_time(mblog):
     finally:
         return release_time
 
-def get_video_pic(mblog):
+def get_image_url(mblog):
     try:
         page_info = mblog['page_info']
     except:
@@ -191,7 +191,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
                 base_parser.update_url('VA_urls', url, Constance.TODO)
 
 
-@tools.run_safe_model(__name__)
+# @tools.run_safe_model(__name__) # 移到parser_control
 def parser(url_info):
     url_info['_id'] = str(url_info['_id'])
     log.debug('处理 \n' + tools.dumps_json(url_info))
@@ -241,7 +241,7 @@ def parser(url_info):
                 comment_count = get_comments_count(mblog)
                 attitudes_count = get_attitudes_count(mblog)
                 author = get_author(mblog)
-                video_pic = get_video_pic(mblog)
+                image_url = get_image_url(mblog)
                 release_time = get_release_time(mblog)
                 video_url = get_video_url(mblog)
 
@@ -256,7 +256,7 @@ def parser(url_info):
                     转发数： %s
                     评论数： %s
                     点赞数： %s
-                         ''' % (content, url, author, origin, video_pic, video_url, release_time,
+                         ''' % (content, url, author, origin, image_url, video_url, release_time,
                                 str(reposts_count), str(comment_count), str(attitudes_count)))
 
                 contained_key, contained_key_count = base_parser.get_contained_key('', content,remark['search_keyword1'],
@@ -267,7 +267,7 @@ def parser(url_info):
                 base_parser.add_content_info('VA_content_info', SITE_ID, url = url, release_time = release_time,
                                              origin = origin, title = content, reposts_count = reposts_count,
                                              comment_count = comment_count, attitudes_count = attitudes_count,
-                                             author = author, video_pic = video_pic, video_url = video_url,
+                                             author = author, image_url = image_url, video_url = video_url,
                                              search_type = search_type, keyword = contained_key,
                                              keyword_count = contained_key_count)
         except:

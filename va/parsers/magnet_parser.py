@@ -46,7 +46,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
             if not base_parser.add_url('VA_urls', SITE_ID, url, remark=remark):
                 base_parser.update_url('VA_urls', url, Constance.TODO)
 
-@tools.run_safe_model(__name__)
+# @tools.run_safe_model(__name__) # 移到parser_control
 def parser(url_info):
     url_info['_id'] = str(url_info['_id'])
     log.debug('处理 \n' + tools.dumps_json(url_info))

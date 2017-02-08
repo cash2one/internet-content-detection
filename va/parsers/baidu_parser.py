@@ -46,8 +46,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
             if not base_parser.add_url('VA_urls', SITE_ID, link, remark=remark):
                 base_parser.update_url('VA_urls', link, Constance.TODO)
 
-
-@tools.run_safe_model(__name__)
+# @tools.run_safe_model(__name__) # 移到parser_control
 def parser(url_info):
     url_info['_id'] = str(url_info['_id'])
     log.debug('处理 \n' + tools.dumps_json(url_info))
@@ -94,6 +93,7 @@ def parser(url_info):
         except:
             release_time = ''
 
+        content = ''
         for content in headers[i].next_sibling():
             content = tools.get_tag(content,'div',{'class': 'c-abstract'},find_all=False)
             if content:
@@ -106,7 +106,7 @@ def parser(url_info):
             原文url：%s
             图片url：%s
             日期：   %s
-               ''' % (title, content, url, img, release_time))
+               ''' % (title, content , url, img, release_time))
 
 
         contained_key, contained_key_count = base_parser.get_contained_key(title,content,remark['search_keyword1'],
@@ -117,11 +117,13 @@ def parser(url_info):
         is_video1 = base_parser.is_have_video_by_site(url)
         if not is_video1:
             is_video2 = base_parser.is_have_video_by_judge(title, content)
-            if not is_video2:
+            if is_video2:
                 html2 = tools.get_html_by_requests(url)
                 is_video3 = base_parser.is_have_video_by_common(html2)
                 if not is_video3:
                     continue
+            else:
+                continue
 
         base_parser.add_content_info('VA_content_info', SITE_ID, url = url, title = title, content = content,
                                      image_url = img, release_time = release_time, search_type = search_type,
@@ -133,14 +135,20 @@ def parser(url_info):
     #     base_parser.update_url('urls'  , root_url, Constance.EXCEPTION)
 
 # url_info = {
-#     'remark': {'search_keyword3': [],
-#     'search_keyword1': ['中国人要来了'],
-#     'search_keyword2': []},
-#     'url': 'https://www.baidu.com/s?wd=%E4%B8%AD%E5%9B%BD%E4%BA%BA%E8%A6%81%E6%9D%A5%E4%BA%86%20%E8%A7%86%E9%A2%91&pn=0',
-#     '_id': '589a76a3efc81c29addb3f6b',
-#     'depth': 0,
-#     'status': 0,
-#     'site_id': 10001,
+#     "_id": "589a7956efc81c23310d67de",
+#     "site_id": 10001,
+#     "url": "https://www.baidu.com/s?wd=%E4%B8%AD%E5%9B%BD%E4%BA%BA%E8%A6%81%E6%9D%A5%E4%BA%86%20%E8%A7%86%E9%A2%91&pn=20",
+#     "depth": 0,
+#     "remark": {
+#         "search_keyword2": [],
+#         "search_keyword1": [
+#             "中国人要来了"
+#         ],
+#         "search_keyword3": []
+#     },
+#     "status": 0
 # }
-# parser(url_info)
-
+# try:
+#     parser(url_info)
+# except Exception as e:
+#     print(e)

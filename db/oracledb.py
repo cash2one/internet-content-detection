@@ -31,7 +31,7 @@ class OracleDB(Singleton):
     def __init__(self, ip = IP, port = PORT, db = DB, user_name = USER_NAME, user_pass = USER_PASS):
         super(OracleDB, self).__init__()
 
-        if not hasattr(self,'_db'):
+        if not hasattr(self,'conn'):
             try:
                 self.conn = cx_Oracle.connect(user_name, user_pass, '%s:%d/%s'%(ip, port, db))
                 self.cursor = self.conn.cursor()
@@ -63,7 +63,7 @@ class OracleDB(Singleton):
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-        except:
+        except Exception as e:
             log.error(e)
             return False
         else:
@@ -73,7 +73,7 @@ class OracleDB(Singleton):
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-        except:
+        except Exception as e:
             log.error(e)
             return False
         else:
