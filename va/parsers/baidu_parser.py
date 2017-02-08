@@ -40,8 +40,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     for i in search_keyword:
         if not i:
             continue
-        for num in range(0, 750, 50):
-            link = "http://news.baidu.com/ns?word=%s%s&pn=%s&cl=2&ct=1&tn=news&rn=50&ie=utf-8&bt=0&et=0" % (i,' 视频', num)
+        for num in range(0, 760, 10):
+            link = "https://www.baidu.com/s?wd=%s%s&pn=%d" % (i,' 视频', num)
             link = tools.quote(link, safe='#/:?=&%')
             if not base_parser.add_url('VA_urls', SITE_ID, link, remark=remark):
                 base_parser.update_url('VA_urls', link, Constance.TODO)
@@ -49,7 +49,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
 
 @tools.run_safe_model(__name__)
 def parser(url_info):
-    log.debug('处理 ' + tools.dumps_json_(url_info))
+    url_info['_id'] = str(url_info['_id'])
+    log.debug('处理 \n' + tools.dumps_json(url_info))
 
     root_url = url_info['url']
     depth = url_info['depth']
@@ -57,9 +58,7 @@ def parser(url_info):
     remark = url_info['remark']
 
     html = tools.get_html_by_webdirver(root_url)
-    print(html)
     headers = tools.get_tag(html,'h3', {'class': 't'})
-    print(headers)   # headers 为空 TODO
 
     for i in range(0, len(headers)):
         title = tools.get_text(headers[i])
@@ -134,14 +133,14 @@ def parser(url_info):
     #     base_parser.update_url('urls'  , root_url, Constance.EXCEPTION)
 
 # url_info = {
-#     '_id': '5899804defc81c2539977f2c',
-#     'status': 0,
-#     'url': 'http://baidu.com/ns?word=%E4%B8%AD%E5%9B%BD%E4%BA%BA%E8%A6%81%E6%9D%A5%E4%BA%86%20%E8%A7%86%E9%A2%91&pn=0&cl=2&ct=1&tn=news&rn=150&ie=utf-8&bt=0&et=0',
-#     'remark': {'search_keyword2': [],
+#     'remark': {'search_keyword3': [],
 #     'search_keyword1': ['中国人要来了'],
-#     'search_keyword3': []},
+#     'search_keyword2': []},
+#     'url': 'https://www.baidu.com/s?wd=%E4%B8%AD%E5%9B%BD%E4%BA%BA%E8%A6%81%E6%9D%A5%E4%BA%86%20%E8%A7%86%E9%A2%91&pn=0',
+#     '_id': '589a76a3efc81c29addb3f6b',
+#     'depth': 0,
+#     'status': 0,
 #     'site_id': 10001,
-#     'depth': 0
 # }
 # parser(url_info)
 

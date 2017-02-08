@@ -86,7 +86,13 @@ class Collector(threading.Thread):
         if self.get_max_read_size() == 0:
             self._null_times += 1
             if self._null_times >= self._allowed_null_times:
-                return True
+                #检查数据库中有没有正在做的url
+                urls_doing = self._db.find(self._tab_urls, {'status':Constance.DOING})
+                if urls_doing:
+                    self._null_times = 0
+                    return False
+                else:
+                    return True
         else:
             self._null_times = 0
             return False

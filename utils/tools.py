@@ -257,29 +257,6 @@ def dumps_json(json_):
 
     return json_
 
-def dumps_json_(json_):
-    '''
-    @summary: 格式化json字符串， key value中不能包含逗号 适用于mongodb中的json
-
-    ---------
-    @param json_: json格式
-    ---------
-    @result: 格式化后的字符串
-    '''
-
-    json_ = str(json_)
-    json_str = json_[1: -1]
-
-    key_values = json_str.split(',')
-
-    json_str = '\n{\n'
-    for key_value in key_values:
-        json_str += ' ' * 4
-        json_str = json_str + key_value.strip() + '\n'
-    json_str += '}\n'
-
-    return json_str
-
 def get_json_value(json_object, key):
     '''
     @summary:
