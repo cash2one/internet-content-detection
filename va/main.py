@@ -62,9 +62,9 @@ def main():
 
             keyword_id = result[0]
             task_id = result[1]
-            search_keyword1 = result[2].split(',') if result[2] else []
-            search_keyword2 = result[3].split(',') if result[3] else []
-            search_keyword3 = result[4].split(',') if result[4] else []
+            search_keyword1 = []
+            search_keyword2 = result[2].split(',') if result[2] else []
+            search_keyword3 = result[3].split(',') if result[3] else []
 
             def begin_callback():
                 log.info('\n********** VA begin **********')
@@ -92,7 +92,7 @@ def main():
                         'program_name': 'str_title',
                         'program_url': 'str_url',
                         'release_date': 'date_release_time',
-                        'image_url': 'str_video_url',
+                        'image_url': 'str_image_url ',
                         'program_content':'str_content',
                         'task_id': 'vint_%d' % task_id,
                         'keyword':'str_keyword',
