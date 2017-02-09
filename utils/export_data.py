@@ -134,3 +134,17 @@ class ExportData():
 
         # self._aim_db.close()
         log.debug('共导出%d条数据'%self._export_count)
+
+
+    def update_image_url(self):
+        self._aim_db = OracleDB()
+        results = self._mongodb.find(self._source_table)
+        for result in results:
+            video_url = result['video_url']
+            image_url = result['image_url']
+            sql = 'update ' + self._aim_table + ' set image_url = ' + image_url ' where image_url = ' + video_url
+            self._aim_db.update(sql)
+
+export = ExportData('VA_content_info', 'tab_ivms_program_info', {}, 'program_url')
+export.update_image_url()
+
