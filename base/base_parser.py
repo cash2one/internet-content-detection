@@ -150,9 +150,9 @@ def add_website_info(table, site_id, url, name, domain = '', ip = '', address = 
 def add_content_info(table, site_id, url='', title='', content='',
                      author='', video_url='', image_url='', origin='',
                      watched_count='', comment_count='', share_count='',
-                     praise_count='', release_time='',file_size='',
-                     file_name='',magnet_link='',download_count='',
-                     reposts_count='',attitudes_count='',
+                     praise_count='', release_time='', file_size='',
+                     file_name='', magnet_link='', download_count='',
+                     reposts_count='', attitudes_count='', is_verified = '',
                      search_type='', keyword = '', keyword_count = 0):
     '''
     @summary: 添加网站信息
@@ -177,6 +177,7 @@ def add_content_info(table, site_id, url='', title='', content='',
     @param praise_count: 点赞数
     @param reposts_count: 转发数
     @param attitudes_count: 点赞数
+    @param is_verified: 微博用户是否有V认证
     ---------
     @result:
     '''
@@ -201,6 +202,7 @@ def add_content_info(table, site_id, url='', title='', content='',
         'file_name':file_name,
         'reposts_count':reposts_count,
         'attitudes_count':attitudes_count,
+        'is_verified':is_verified,
         'search_type':search_type,
         'read_status':0,
         'record_time': tools.get_current_date(),

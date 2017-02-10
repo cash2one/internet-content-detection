@@ -106,6 +106,7 @@ def main():
             spider.add_parser(netdisk_parser)
             spider.add_parser(weibo_parser)
             spider.add_parser(wechat_parser)
+            spider.add_parser(soubaidupan_parser)
 
             spider.start()
 

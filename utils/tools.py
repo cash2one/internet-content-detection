@@ -170,7 +170,7 @@ def fit_url(urls, identis):
 
 _regexs = {}
 @log_function_time
-def get_info(html,regexs, allow_repeat = False):
+def get_info(html, regexs, allow_repeat = False):
     regexs = isinstance(regexs, str) and [regexs] or regexs
 
     infos = []

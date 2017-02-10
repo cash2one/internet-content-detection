@@ -4,4 +4,5 @@ __all__ = [
     'netdisk_parser',
     'weibo_parser',
     'wechat_parser',
+    'soubaidupan_parser',
  ]
