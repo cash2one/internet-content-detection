@@ -6,10 +6,13 @@ import base.base_parser as base_parser
 import utils.tools as tools
 from utils.log import log
 
+# 必须定义 网站id
 SITE_ID = 2
+# 必须定义 网站名
 NAME = '百度'
 
 @tools.run_safe_model(__name__)
+# 必须定义 添加网站信息
 def add_site_info():
     log.debug('添加网站信息')
     site_id = SITE_ID
@@ -20,6 +23,7 @@ def add_site_info():
     base_parser.add_website_info(table, site_id, url, name)
 
 @tools.run_safe_model(__name__)
+# 必须定义 添加根url
 def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = []):
     log.debug('''
         添加根url
@@ -33,6 +37,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
 
     pass
 
+# 必须定义 解析网址
 def parser(url_info):
     url_info['_id'] = str(url_info['_id'])
     log.debug('处理 \n' + tools.dumps_json(url_info))
