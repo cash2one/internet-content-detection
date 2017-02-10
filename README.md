@@ -187,8 +187,7 @@ urls表 `OpWB_urls`
 |read_status||||读取状态（0 没读， 1读取）|
 
 ---
-### 手机APP视听节目监测系统  VA
-App_ ###
+### 手机APP视听节目监测系统  VAApp_ ###
 
 app信息表 `VAApp_site_info`
 
@@ -359,6 +358,7 @@ urls表 `LiveApp_urls`
 |age||||年龄|
 |address||||地区|
 |fans_count||||粉丝数|
+|watched_count||||观众数 |
 |ranklist_day||||日排行榜|
 |ranklist_week||||周排行榜|
 |ranklist_month||||月排行榜|
