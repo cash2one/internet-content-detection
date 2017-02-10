@@ -13,7 +13,7 @@ search_type = 103
 
 HEADER = {
     'Cookie':'BAIDU_SSP_lcr=https://www.baidu.com/link?url=WUUgq8ofLooM45c49gQqo1ITVjEmpRWPB1LUz8MHuH0joAh9aZl_e80KWtoYnSa5&wd=&eqid=f315cbc900006f4200000004589bfabd; cscpvrich_fidx=1; uuid=ehabpzfr; _ga=GA1.2.1989624143.1482462347; _gat=1; Hm_lvt_311044e7f31d9fd867541074b4ba8cfd=1485148844,1486541675,1486617283; Hm_lpvt_311044e7f31d9fd867541074b4ba8cfd=1486617757',
-    'Host:www.wangpansou.cn',
+    'Host':'www.wangpansou.cn',
     'Referer':'http://www.wangpansou.cn/s.php?wp=0&ty=gn&op=gn&q=%E7%BE%8E%E5%A5%B3&q=%E7%BE%8E%E5%A5%B3',
     'Upgrade-Insecure-Requests':1,
     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'

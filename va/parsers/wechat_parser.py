@@ -120,6 +120,8 @@ def parser(url_info):
         except:
             continue
 
+        contained_key, contained_key_count = base_parser.get_contained_key(title, content, remark['search_keyword1'], remark['search_keyword2'], remark['search_keyword3'])
+
         log.debug('''
             标题：   %s
             内容：   %s
@@ -129,15 +131,14 @@ def parser(url_info):
             观看数： %s
             日期：   %s
             有视频： %d
-                  '''%(title, content, origin, url , image, watched_count, release_time, play_icon and True or False))
+            关键词： %s
+            关键词数:%s
+                  '''%(title, content, origin, url , image, watched_count, release_time, play_icon and True or False, contained_key, contained_key_count))
 
-        contained_key, contained_key_count = base_parser.get_contained_key(title, content, remark['search_keyword1'], remark['search_keyword2'], remark['search_keyword3'])
         if not contained_key or not play_icon:
             continue
-        if not play_icon:
-            continue
 
-        base_parser.add_content_info('VA_content_info', SITE_ID, url, title, content, video_pic = image, release_time = release_time, origin = origin,
+        base_parser.add_content_info('VA_content_info', SITE_ID, url, title, content, image_url = image, release_time = release_time, origin = origin,
                                      watched_count = watched_count, search_type=SEARCH_TYPE, keyword = contained_key, keyword_count = contained_key_count)
 
     base_parser.update_url('VA_urls', root_url, Constance.DONE)

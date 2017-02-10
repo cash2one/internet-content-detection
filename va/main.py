@@ -47,19 +47,6 @@ def main():
             if not result:
                 break
 
-            # result = [0, 0, '', '', '']
-            # for r in results:
-            #     result[0] = r[0]
-            #     result[1] = r[1]
-            #     result[2] += r[2] + ","
-            #     result[3] += r[3] + ","
-            #     result[4] += r[4] + ","
-
-            # search_keyword1 = result[2][:-1].split(',')
-            # search_keyword2 = result[3][:-1].split(',')
-            # search_keyword3 = result[4][:-1].split(',')
-            # task_id = result[1]
-
             keyword_id = result[0]
             task_id = result[1]
             search_keyword1 = []

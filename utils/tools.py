@@ -198,17 +198,18 @@ def get_tag(html, name=None, attrs={}, find_all = True):
         if html:
             soup = BeautifulSoup(html, "html.parser") if isinstance(html, str) else html
             result = soup.find_all(name, attrs) if find_all else soup.find(name, attrs)
-            return result if result else ['']
+            return result if result else []
         else:
-            return ['']
+            return []
     except Exception as e:
         log.error(e)
-        return ['']
+        return []
 
 def get_text(soup, *args):
     try:
         return soup.get_text()
-    except:
+    except Exception as e:
+        log.error(e)
         return ''
 
 def del_html_tag(content):
