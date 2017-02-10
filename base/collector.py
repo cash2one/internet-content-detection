@@ -51,7 +51,7 @@ class Collector(threading.Thread):
 
     @tools.log_function_time
     def __input_data(self):
-        log.debug('read_pos %d, write_pos %d buffer size %d'%(self._read_pos, self._write_pos, len(self._urls)))
+        log.debug('read_pos %d, write_pos %d buffer size %d'%(self._read_pos, self._write_pos, self.get_max_read_size()))
         log.debug('buffer can write size = %d'%self.get_max_write_size())
         if self.get_max_write_size() == 0:
             log.debug("collector 已满 size = %d"%self.get_max_read_size())

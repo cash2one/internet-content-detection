@@ -53,7 +53,8 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
                 base_parser.update_url('VA_urls', url, Constance.TODO)
 
 def parser(url_info):
-    log.debug('处理 ' + tools.dumps_json_(url_info))
+    url_info['_id'] = str(url_info['_id'])
+    log.debug('处理 \n' + tools.dumps_json(url_info))
 
     root_url = url_info['url']
     depth = url_info['depth']
@@ -107,6 +108,7 @@ def parser(url_info):
                                      file_name = title, author = author, watched_count = watched_count,
                                      download_count = download_count, search_type = search_type,
                                      keyword = contained_key, keyword_count = contained_key_count)
+
     base_parser.update_url('VA_urls', root_url, Constance.DONE)
 
 if __name__ == '__main__':
