@@ -74,7 +74,8 @@ class MongoDB(Singleton):
 
         try:
             self._db[table].save(key_value)
-        except:
+        except Exception as e:
+            log.error(e)
             return False
         else:
             return True
@@ -93,7 +94,8 @@ class MongoDB(Singleton):
 
         try:
             self._db[table].update(old_value, {'$set':new_value}, multi = multi)
-        except:
+        except Exception as e:
+            log.error(e)
             return False
         else:
             return True
@@ -109,7 +111,8 @@ class MongoDB(Singleton):
         '''
         try:
             self._db[table].remove(condition)
-        except:
+        except Exception as e:
+            log.error(e)
             return False
         else:
             return True

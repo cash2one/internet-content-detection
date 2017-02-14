@@ -342,18 +342,12 @@ urls表 `LiveApp_urls`
 |remark||||url备注|
 |site_id||||网站id|
 
-存储路径配置 `LiveApp_storage_info`
-
-| 字段名              | 数据类型| 长度 | 说明       | 描述 |
-|:-------------------|:-------|:-----|:--------- |:----|
-|storage_id||||存储路径id|
-|storage_path||||路径|
-
 主播信息表 `LiveApp_anchor_info`
 
 | 字段名              | 数据类型| 长度 | 说明       | 描述 |
 |:-------------------|:-------|:-----|:--------- |:----|
 |name||||主播名|
+|image_url||||贴图|
 |sex||||性别|
 |age||||年龄|
 |address||||地区|
@@ -364,8 +358,7 @@ urls表 `LiveApp_urls`
 |ranklist_month||||月排行榜|
 |room||||房间号|
 |room_url||||房间连接|
-|storage_id||||存储路径id|
-|video_local_path||||直播视频本地存储路径|
+|video_path||||直播视频流路径|
 |record_time||||记录时间|
 |site_id||||网站id|
 |read_status||||读取状态（0 没读， 1读取）|

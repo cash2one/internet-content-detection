@@ -23,6 +23,7 @@ import datetime
 import time
 import os
 import execjs   # pip install PyExecJS
+import hashlib
 
 TIME_OUT = 30
 TIMER_TIME = 5
@@ -348,6 +349,22 @@ def mkdir(path):
     except OSError as exc: # Python >2.5
         pass
 
+def write_file(filename, content, mode = 'w'):
+    '''
+    @summary: 写文件
+    ---------
+    @param filename: 文件名（有路径）
+    @param content: 内容
+    @param mode: 模式 w/w+ (覆盖/追加)
+    ---------
+    @result:
+    '''
+
+    directory = os.path.dirname(filename)
+    mkdir(directory)
+    with open(filename, mode, encoding = 'utf-8') as file:
+        file.writelines(content)
+
 def download_file(url, base_path, filename = '', call_func = ''):
     file_path = base_path + filename
     directory = os.path.dirname(file_path)
@@ -436,4 +453,11 @@ def get_current_timestamp():
 
 def get_current_date(date_format = '%Y-%m-%d %H:%M:%S'):
     return time.strftime(date_format, time.localtime(time.time()))
+
+################################################
+def get_md5(source_str):
+    m = hashlib.md5()
+    m.update(source_str.encode('utf-8'))
+    return m.hexdigest()
+
 

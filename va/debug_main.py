@@ -11,7 +11,7 @@ import time
 # 需配置
 from va.parsers import *
 def main():
-    search_keyword1 = ['树大招风']
+    search_keyword1 = ['成龙']
     search_keyword2 = []
     search_keyword3 = []
 
@@ -33,7 +33,8 @@ def main():
     # spider.add_parser(netdisk_parser)
     # spider.add_parser(weibo_parser)
     # spider.add_parser(wechat_parser)
-    spider.add_parser(soubaidupan_parser)
+    # spider.add_parser(soubaidupan_parser)
+    spider.add_parser(douban_parser)
 
     spider.start()
 

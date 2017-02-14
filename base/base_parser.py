@@ -147,7 +147,7 @@ def add_website_info(table, site_id, url, name, domain = '', ip = '', address = 
     }
     db.add(table, site_info)
 
-def add_content_info(table, site_id, url='', title='', content='',
+def add_content_info(table, site_id, url, title='', content='',
                      author='', video_url='', image_url='', origin='',
                      watched_count='', comment_count='', share_count='',
                      praise_count='', release_time='', file_size='',

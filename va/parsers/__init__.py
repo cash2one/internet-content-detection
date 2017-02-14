@@ -5,4 +5,5 @@ __all__ = [
     'weibo_parser',
     'wechat_parser',
     'soubaidupan_parser',
+    'douban_parser',
  ]

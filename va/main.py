@@ -107,6 +107,7 @@ def main():
             spider.add_parser(weibo_parser)
             spider.add_parser(wechat_parser)
             spider.add_parser(soubaidupan_parser)
+            spider.add_parser(douban_parser)
 
             spider.start()
 
