@@ -99,6 +99,8 @@ def parser(url_info):
             if content:
                 content = tools.get_text(content)
                 break
+            else:
+                content = ''
 
         log.debug('''
             标题：   %s
