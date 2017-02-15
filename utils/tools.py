@@ -171,7 +171,7 @@ def fit_url(urls, identis):
 
 _regexs = {}
 # @log_function_time
-def get_info(html, regexs, allow_repeat = False):
+def get_info(html, regexs, allow_repeat = False, fetch_one = False):
     regexs = isinstance(regexs, str) and [regexs] or regexs
 
     infos = []
@@ -179,17 +179,20 @@ def get_info(html, regexs, allow_repeat = False):
         try:
             if regex == '':
                 continue
-            infos = _regexs[regex].findall(str(html))
+            infos = _regexs[regex].findall(str(html)) if not fetch_one else _regexs[regex].search(html).group()
         except:
             _regexs[regex] = re.compile(regex, re.S)
-            infos = _regexs[regex].findall(str(html))
+            infos = _regexs[regex].findall(str(html)) if not fetch_one else _regexs[regex].search(html).group()
 
         # infos = re.findall(regex,str(html),re.S)
         # infos = re.compile(regexs, re.S).findall(str(html))
         if len(infos) > 0:
             break
 
-    return allow_repeat and infos or sorted(set(infos),key = infos.index)
+    if fetch_one:
+        return infos
+    else:
+        return allow_repeat and infos or sorted(set(infos),key = infos.index)
 
 def get_domain(url):
     return get_tld(url)
