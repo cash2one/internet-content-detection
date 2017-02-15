@@ -78,7 +78,7 @@ def parser(url_info):
         video_url = tools.get_info(info, video_url, allow_repeat = True)
         video_url = ''.join(video_url)
 
-        comment_count = ['<span class="pl">\((.*?)人评价\)</span>']
+        comment_count = ['<span class="pl">\((\d*?)人评价\)</span>']
         comment_count = tools.get_info(info, comment_count, allow_repeat = True)
         comment_count = ''.join(comment_count)
         comment_count = int(comment_count) if comment_count else 0
@@ -99,14 +99,14 @@ def parser(url_info):
                                                                            remark['search_keyword1'],
                                                                            remark['search_keyword2'], remark['search_keyword3'])
         log.debug('''
-        标题:    %s
-        内容:    %s
+        标题:     %s
+        内容:     %s
         评论数    %d
         视频地址  %s
         图片地址  %s
         发布时间  %s
         关键字：  %s
-        关键字数： %d
+        关键字数：%d
         ''' % (title, content, comment_count, video_url, image_url, release_time, contained_key, contained_key_count))
 
         if not contained_key:
