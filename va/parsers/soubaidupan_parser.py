@@ -19,7 +19,7 @@ def add_site_info():
     table = 'VA_site_info'
     url = 'http://www.sobaidupan.com/'
     ip = '124.232.133.79'
-    address = '湖南省长沙市 电信IDC机房',
+    address = '湖南省长沙市 电信IDC机房'
 
     base_parser.add_website_info(table, site_id, url, name, ip = ip, address = address)
 

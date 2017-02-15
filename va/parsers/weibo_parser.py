@@ -161,7 +161,7 @@ def add_site_info():
     url = 'https://m.weibo.cn/'
     domain = 'weibo.cn'
     ip = '180.149.153.216'
-    address = '中国 北京',
+    address = '中国 北京'
     base_parser.add_website_info(table, site_id, url, name, domain, ip, address)
 
 

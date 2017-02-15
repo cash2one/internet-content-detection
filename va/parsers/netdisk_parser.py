@@ -28,7 +28,7 @@ def add_site_info():
     url = 'http://www.wangpansou.cn/'
     domain = 'wangpansou.cn'
     ip = '122.114.91.8'
-    address = '中国 河南 郑州 电信/联通',
+    address = '中国 河南 郑州 电信/联通'
     icp = '15001638'
     base_parser.add_website_info(table, site_id, url, name, domain, ip, address,icp=icp)
 

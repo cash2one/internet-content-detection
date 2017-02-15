@@ -22,7 +22,7 @@ def add_site_info():
     public_safety = '11010502000728'
     video_license = '0110418'
     icp = '090015'
-    address = '北京市 鹏博士长城宽带',
+    address = '北京市 鹏博士长城宽带'
 
     base_parser.add_website_info(table, site_id, url, name, ip = ip, address = address,video_license = video_license,
                                  icp = icp, public_safety = public_safety)
