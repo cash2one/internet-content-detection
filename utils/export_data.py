@@ -135,3 +135,24 @@ class ExportData():
         # self._aim_db.close()
         log.debug('共导出%d条数据'%self._export_count)
 
+
+if __name__ == '__main__':
+    task_id = 22
+
+    key_map = {
+        'program_id': 'vint_sequence.nextval',
+        'search_type': 'int_search_type',
+        'program_name': 'str_title',
+        'program_url': 'str_url',
+        'release_date': 'date_release_time',
+        'image_url': 'str_image_url',
+        'program_content':'str_content',
+        'task_id': 'vint_%d'%task_id,
+        'keyword':'str_keyword',
+        'keyword_count':'int_keyword_count',
+        'check_status':'vint_202'
+    }
+
+    export = ExportData('VA_content_info', 'tab_ivms_program_info', key_map, 'program_url')
+    export.export_to_oracle()
+

@@ -126,7 +126,7 @@ def get_release_time(mblog):
             release_time = minutes_ago.strftime("%Y-%m-%d %H:%M")
         else:
             if len(release_time)<=14:
-                release_time = '%s%s'%(timeStr[0:4],release_time)
+                release_time = '%s-%s'%(timeStr[0:4],release_time)
     except:
         release_time = ''
     finally:

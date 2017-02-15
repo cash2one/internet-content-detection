@@ -79,7 +79,7 @@ def main():
                         'program_name': 'str_title',
                         'program_url': 'str_url',
                         'release_date': 'date_release_time',
-                        'image_url': 'str_image_url ',
+                        'image_url': 'str_image_url',
                         'program_content':'str_content',
                         'task_id': 'vint_%d' % task_id,
                         'keyword':'str_keyword',

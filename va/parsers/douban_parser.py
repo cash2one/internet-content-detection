@@ -9,7 +9,7 @@ from utils.log import log
 
 SITE_ID = 10007
 NAME = '豆瓣网'
-search_type = 103
+search_type = 106
 
 @tools.run_safe_model(__name__)
 def add_site_info():
