@@ -353,9 +353,6 @@ urls表 `LiveApp_urls`
 |address||||地区|
 |fans_count||||粉丝数|
 |watched_count||||观众数 |
-|ranklist_day||||日排行榜|
-|ranklist_week||||周排行榜|
-|ranklist_month||||月排行榜|
 |room||||房间号|
 |room_url||||房间连接|
 |video_path||||直播视频流路径|
