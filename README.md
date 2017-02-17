@@ -353,11 +353,12 @@ urls表 `LiveApp_urls`
 |address||||地区|
 |fans_count||||粉丝数|
 |watched_count||||观众数 |
-|room||||房间号|
+|room_id||||房间号|
 |room_url||||房间连接|
 |video_path||||直播视频流路径|
 |record_time||||记录时间|
 |site_id||||网站id|
+|live_view||||直播状态（是否在直播 0 未直播 1 直播中）|
 |read_status||||读取状态（0 没读， 1读取）|
 
 ---

@@ -16,7 +16,7 @@ from base.collector import Collector
 import threading
 
 class Spider(threading.Thread):
-    def __init__(self, tab_urls, tab_site, tab_content, parser_count = None, search_keyword1 = [], search_keyword2 = [], search_keyword3 = [], begin_callback = None, end_callback = None):
+    def __init__(self, tab_urls, tab_site, tab_content, parser_count = None, search_keyword1 = [], search_keyword2 = [], search_keyword3 = [], begin_callback = None, end_callback = None, content_unique_key = None):
         '''
         @summary:
         ---------
@@ -38,7 +38,7 @@ class Spider(threading.Thread):
         self._db = MongoDB()
         self._db.set_unique_key(tab_urls, 'url')
         self._db.set_unique_key(tab_site, 'site_id')
-        self._db.set_unique_key(tab_content, 'url')
+        self._db.set_unique_key(tab_content, 'url' if not content_unique_key else content_unique_key)
 
         self._collector = Collector(tab_urls)
         self._parsers = []

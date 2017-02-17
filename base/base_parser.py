@@ -255,6 +255,47 @@ def add_appsite_info(table, site_id, url, name , app_url = '', summary = '', upd
 
     db.add(table, app_info)
 
+def add_anchor_info(table, site_id , name  = '', image_url  = '', room_id  = '', room_url  = '', video_path = '',  watched_count  = '', fans_count  = '', sex  = '', age = '', address  = '', live_view = 1):
+    '''
+    @summary:
+    ---------
+    @param table: 表名
+    @param site_id: 网站id
+    @param name: 主播名
+    @param image_url: 贴图地址
+    @param room_id: 房间号
+    @param room_url: 房间网页的url
+    @param video_path: 房间视频流地址
+    @param watched_count: 观众数
+    @param fans_count: 粉丝数
+    @param sex:  性别
+    @param age:  年龄
+    @param address:   主播所在地址（城市）
+    @param live_view: 直播状态（0 未直播 1 直播）
+    ---------
+    @result:
+    '''
+    anchor_info_dict = {
+        'site_id':site_id,
+        'name':name,
+        'image_url':image_url,
+        'sex':sex,
+        'age':age,
+        'address':address,
+        'fans_count':fans_count,
+        'watched_count':watched_count,
+        'room_id':room_id,
+        'room_url':room_url,
+        'video_path':video_path,
+        'live_view':live_view,
+        'record_time':tools.get_current_date(),
+        'read_status':0
+    }
+
+    if not db.add(table, anchor_info_dict):
+        anchor_info_dict.pop('_id')
+        db.update(table, {'name':name}, anchor_info_dict)
+
 def add_url(table, site_id, url, depth = 0, remark = '', status = Constance.TODO):
     url_dict = {'site_id':site_id, 'url':url, 'depth':depth, 'remark':remark, 'status':status}
     return db.add(table, url_dict)

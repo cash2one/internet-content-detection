@@ -80,7 +80,7 @@ class MongoDB(Singleton):
         else:
             return True
 
-    def update(self, table, old_value, new_value, multi=True):
+    def update(self, table, old_value, new_value, multi = True):
         '''
         @summary: 更新
         ---------

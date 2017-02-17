@@ -33,10 +33,10 @@ def log_function_time(func):
     try:
         @functools.wraps(func)  #将函数的原来属性付给新函数
         def calculate_time(*args, **kw):
-            began_time = time.time()
+            # began_time = time.time()
             callfunc = func(*args, **kw)
-            end_time = time.time()
-            log.debug(func.__name__ + " run time  = " + str(end_time - began_time))
+            # end_time = time.time()
+            # log.debug(func.__name__ + " run time  = " + str(end_time - began_time))
             return callfunc
         return calculate_time
     except:
@@ -258,6 +258,7 @@ def dumps_json(json_):
         json_ = json.dumps(json_, ensure_ascii=False, indent=4, skipkeys = True)
 
     except Exception as e:
+        log.error(e)
         json_ = str(json_)
 
     return json_
