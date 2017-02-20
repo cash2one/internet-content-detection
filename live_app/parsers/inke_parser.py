@@ -127,7 +127,39 @@ def parser(url_info):
         }
         fans_json = tools.get_json_by_requests('http://120.55.238.158/api/user/relation/numrelations', params)
         fans_count = tools.get_json_value(fans_json, 'num_followers')
-        sex = ''
+
+        #主播观众数请求地址
+        params = {
+            'lc'          :'0000000000000048',
+            'cc'          :'TG0001',
+            'cv'          :'IK3.8.60_Iphone',
+            'proto'       :7,
+            'idfa'        :'D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB',
+            'idfv'        :'5779214D-BC8F-446E-A547-913048F7F935',
+            'devi'        :'0a4392f06ab0ff10b44c6f88d95bf4d6db67f0e7',
+            'osversion'   :'ios_10.200000',
+            'ua'          :'iPhone9_2',
+            'imei'        :'',
+            'imsi'        :'',
+            'uid'         :207821358,
+            'sid'         :'20RUXGrYPxpJy75btYQYlVp6lYxi0wj1xV50Ttnls6ty3DcXE5i1',
+            'conn'        :'wifi',
+            'mtid'        :'987c70ecbcd643998ea6bcd3b8868934',
+            'mtxid'       :'b0958e29253f',
+            'logid'       :133,
+            'id'          :tools.get_json_value(live, 'id'),
+            'multiaddr'   :1,
+            's_sg'        :S_SG,
+            's_sc'        :100,
+            's_st'        :CURRENT_TIMESTAMP
+            }
+
+        watched_count_url = 'http://120.55.238.158/api/live/infos'#?lc=0000000000000048&cc=TG0001&cv=IK3.8.60_Iphone&proto=7&idfa=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&idfv=5779214D-BC8F-446E-A547-913048F7F935&devi=0a4392f06ab0ff10b44c6f88d95bf4d6db67f0e7&osversion=ios_10.200000&ua=iPhone9_2&imei=&imsi=&uid=207821358&sid=20RUXGrYPxpJy75btYQYlVp6lYxi0wj1xV50Ttnls6ty3DcXE5i1&conn=wifi&mtid=987c70ecbcd643998ea6bcd3b8868934&mtxid=b0958e29253f&logid=133&id=1487572239333810%2C1487572432485069%2C1487572763094071%2C1487573160678176%2C1487571635332280&multiaddr=1&s_sg=c3493ab9d9b2e19cfc20f98bb75ff72f&s_sc=100&s_st=1487573119'
+        watched_count_url = tools.joint_url(watched_count_url, params)
+
+        live_info = tools.get_json_by_requests(watched_count_url)
+        sex = live_info['lives'][0]['creator']['sex']
+        sex = 0 if sex == '1' else 1  #数据库中 0 男 1女； 映客中 0 和 3是女 1是男
         age = ''
 
         log.debug('''
@@ -141,13 +173,14 @@ def parser(url_info):
             粉丝数：     %s
             性别：       %s
             年龄：       %s
-            ''' % (name, image_url, room_id, room_url, video_path, watched_count, address, fans_count, sex, age))
+            观众数url：  %s
+            ''' % (name, image_url, room_id, room_url, video_path, watched_count, address, fans_count, sex, age, watched_count_url))
 
-        base_parser.add_anchor_info('LiveApp_anchor_info', SITE_ID, name = name, image_url = image_url, room_id = room_id, room_url = room_url, video_path = video_path, watched_count = watched_count, address = address, fans_count = fans_count, sex = sex, age = age)
+        base_parser.add_anchor_info('LiveApp_anchor_info', SITE_ID, name = name, image_url = image_url, room_id = room_id, room_url = room_url, video_path = video_path, watched_count = watched_count, address = address, fans_count = fans_count, sex = sex, age = age, watched_count_url = watched_count_url)
 
     base_parser.update_url('LiveApp_urls', root_url, Constance.DONE)
 
-if __name__ == '__main__':
+if __name__ == '__main__1':
     secret_key="8D2E##1[5$^(38#%#d3z96;]35q#MD28"
     current_timestamp = tools.get_current_timestamp()
 
@@ -196,4 +229,3 @@ if __name__ == '__main__':
     }
 
     parser(url_info)
-

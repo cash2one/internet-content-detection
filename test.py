@@ -1,12 +1,30 @@
+import utils.tools as tools
 
-a = ''
-l = a.split(',')
-print(l)
+headers = {
+'Host': 'iface2.iqiyi.com',
+'Content-Type': 'application/x-www-form-urlencoded',
+'t': '445726936',
+'Connection': 'keep-alive',
+'Cookie': 'P00001=99egZJpUs5sPRgjTETjE4QI5FHdYRoHoF5aBRsIvp7THkvbTnIA3pIgB6nCS0Np4UA5f; P00002=%7B%22uid%22%3A%224668417940%22%2C%22user_name%22%3A%22xiaodong.wu%40pattek.com.cn%22%2C%22email%22%3A%22xiaodong.wu%40pattek.com.cn%22%2C%22nickname%22%3A%22%5Cu8ff7%5Cu5931%5Cu7684%5Cu7a0b%5Cu5e8f%5Cu733f%22%2C%22pru%22%3A4668417940%2C%22type%22%3A16%2C%22pnickname%22%3A%22%5Cu8ff7%5Cu5931%5Cu7684%5Cu7a0b%5Cu5e8f%5Cu733f%22%7D; P00003=4668417940; P00007=99egZJpUs5sPRgjTETjE4QI5FHdYRoHoF5aBRsIvp7THkvbTnIA3pIgB6nCS0Np4UA5f; P00010=4668417940; P000email=xiaodong.wu%40pattek.com.cn; P00PRU=4668417940; P01010=1487606400; P00004=-744715190.1487561243.9a2fc828cc; QC005=513fc476a90d666398ccdac285c8fc50',
+'User-Agent': 'QIYIVideo/8.1 (iOS;com.qiyi.iphone;iOS10.2.1;iPhone9,2) Corejar',
+'sign': 'aa16b3bc49b07c14f0a0b11e99f09f1f',
+'Accept-Encoding': 'gzip',
+'Connection': 'keep-alive'
+}
+album_id = '616599500'
+tv_id = '616599500'
+current_time = tools.get_current_timestamp() * 1000
+current_time = str(current_time)
 
-l1 = ['11']
-l2 = []
-ll = l1 + l2
-print(ll)
+url = 'http://iface2.iqiyi.com/video/3.0/v_download?app_k=8e48946f144759d86a50075555fd5862&app_v=8.1&qyid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&secure_p=iPhone&secure_v=1&dev_hw=%7B%22cpu%22:%22%22,%22mem%22:%222802%22%7D&net_sts=1&device_id=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&dev_os=10.2.1&dev_ua=iPhone9,2&net_ip=%7B%22country%22:%22%E4%B8%AD%E5%9B%BD%22,%22province%22:%22%E5%8C%97%E4%BA%AC%22,%22city%22:%22%E5%8C%97%E4%BA%AC%22,%22cc%22:%22%E5%9B%BD%E5%86%85%E5%85%B6%E4%BB%96%22,%22area%22:%22%E5%8D%8E%E5%8C%97%22,%22timeout%22:0,%22respcode%22:0%7D&album_id=616599500&tv_id=616599500&req_times=1&play_core=0&platform_id=12&app_p=iphone&app_t=0&usr_res=16&ppid=1229289410&cookie=53igk5Vn7X1xpazWBjzW2HUN4XGjNSP4aQypF7affdnBUaC6rknOS4dzvIcU1pMm2m2Qfb&lang=zh_CN&app_lm=cn&pps=0&req_sn=1487561635000'
+# url = 'http://iface2.iqiyi.com/video/3.0/v_download?app_k=8e48946f144759d86a50075555fd5862&app_v=8.1&qyid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&secure_p=iPhone&secure_v=1&dev_hw=%7B%22cpu%22:%22%22,%22mem%22:%222802%22%7D&net_sts=1&device_id=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&dev_os=10.2.1&dev_ua=iPhone9,2&net_ip=%7B%22country%22:%22%E4%B8%AD%E5%9B%BD%22,%22province%22:%22%E5%8C%97%E4%BA%AC%22,%22city%22:%22%E5%8C%97%E4%BA%AC%22,%22cc%22:%22%E5%9B%BD%E5%86%85%E5%85%B6%E4%BB%96%22,%22area%22:%22%E5%8D%8E%E5%8C%97%22,%22timeout%22:0,%22respcode%22:0%7D&album_id=' + album_id + '&tv_id=' + tv_id +'&req_times=1&play_core=0&platform_id=12&app_p=iphone&app_t=0&usr_res=16&ppid=1229289410&cookie=53igk5Vn7X1xpazWBjzW2HUN4XGjNSP4aQypF7affdnBUaC6rknOS4dzvIcU1pMm2m2Qfb&lang=zh_CN&app_lm=cn&pps=0&req_sn=' + current_time
 
-hhh = '%s'1
-print(hhh)
+#节目列表
+#第一个url
+# url = 'http://iface2.iqiyi.com/views_feed/3.0/film_feed?app_gv=&net_ip=%7B%22country%22:%22%E4%B8%AD%E5%9B%BD%22,%22province%22:%22%E5%8C%97%E4%BA%AC%22,%22city%22:%22%E5%8C%97%E4%BA%AC%22,%22cc%22:%22%E5%9B%BD%E5%86%85%E5%85%B6%E4%BB%96%22,%22area%22:%22%E5%8D%8E%E5%8C%97%22,%22timeout%22:0,%22respcode%22:0%7D&core=1&psp_vip=0&profile=%257B%2522group%2522%253A%25222%2522%252C%2522counter%2522%253A1%257D&app_lm=cn&secure_p=iPhone&lang=zh_CN&cupid_v=3.6.005&gps=&dev_os=10.2.1&prev_card_index=17&service_sort=&psp_cki=53igk5Vn7X1xpazWBjzW2HUN4XGjNSP4aQypF7affdnBUaC6rknOS4dzvIcU1pMm2m2Qfb&page_st=category_home&app_k=8e48946f144759d86a50075555fd5862&dev_ua=iPhone9,2&net_sts=1&scrn_sts=1&cupid_uid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&cust_count=&pg_num=1&sei=Sa608fc02ce21f128177c5de70af1f023bjdx&app_v=8.1&from_type=57&scrn_dpi=153600&app_t=0&platform_id=12&service_order=&scrn_res=1242*2208&req_sn=' + current_time + '&api_v=4.7&psp_status=1&psp_uid=1229289410&qyid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&ad_skip=3&secure_v=1&tsp=2811&dev_hw=%7B%22cpu%22:%22%22,%22mem%22:%222802%22%7D&pps=0&req_times=1'
+# url = 'http://iface2.iqiyi.com/views_feed/3.0/film_feed?app_gv=&net_ip=%7B%22country%22:%22%E4%B8%AD%E5%9B%BD%22,%22province%22:%22%E5%8C%97%E4%BA%AC%22,%22city%22:%22%E5%8C%97%E4%BA%AC%22,%22cc%22:%22%E5%9B%BD%E5%86%85%E5%85%B6%E4%BB%96%22,%22area%22:%22%E5%8D%8E%E5%8C%97%22,%22timeout%22:0,%22respcode%22:0%7D&core=1&psp_vip=0&profile=%257B%2522group%2522%253A%25222%2522%252C%2522counter%2522%253A1%257D&app_lm=cn&secure_p=iPhone&lang=zh_CN&cupid_v=3.6.005&gps=&dev_os=10.2.1&prev_card_index=17&service_sort=&psp_cki=53igk5Vn7X1xpazWBjzW2HUN4XGjNSP4aQypF7affdnBUaC6rknOS4dzvIcU1pMm2m2Qfb&page_st=category_home&app_k=8e48946f144759d86a50075555fd5862&dev_ua=iPhone9,2&net_sts=1&scrn_sts=1&cupid_uid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&cust_count=&pg_num=1&sei=Sb283389ee1992d147b05d848d6f9dc8dbjdx&app_v=8.1&from_type=57&scrn_dpi=153600&app_t=0&platform_id=12&service_order=&scrn_res=1242*2208&req_sn=1487558729554&api_v=4.7&psp_status=1&psp_uid=1229289410&qyid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&ad_skip=3&secure_v=1&tsp=5073&dev_hw=%7B%22cpu%22:%22%22,%22mem%22:%222618%22%7D&pps=0&req_times=1'
+# url = 'http://iface2.iqiyi.com/views_feed/3.0/film_feed?app_gv=&net_ip=%7B%22country%22:%22%E4%B8%AD%E5%9B%BD%22,%22province%22:%22%E5%8C%97%E4%BA%AC%22,%22city%22:%22%E5%8C%97%E4%BA%AC%22,%22cc%22:%22%E5%9B%BD%E5%86%85%E5%85%B6%E4%BB%96%22,%22area%22:%22%E5%8D%8E%E5%8C%97%22,%22timeout%22:0,%22respcode%22:0%7D&core=1&page_t=film_feed&psp_vip=0&profile=%257B%2522group%2522%253A%25222%2522%252C%2522counter%2522%253A2%257D&app_lm=cn&secure_p=iPhone&lang=zh_CN&cupid_v=3.6.005&gps=&dev_os=10.2.1&service_sort=&psp_cki=53igk5Vn7X1xpazWBjzW2HUN4XGjNSP4aQypF7affdnBUaC6rknOS4dzvIcU1pMm2m2Qfb&page_st=category_home&feed_pg_num=2&app_k=8e48946f144759d86a50075555fd5862&dev_ua=iPhone9,2&net_sts=1&scrn_sts=1&cupid_uid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&cust_count=&sei=S1a2acef101d24d5f8e913b7d6e57237dbjdx&from_type=57&app_v=8.1&scrn_dpi=153600&app_t=0&platform_id=12&service_order=&scrn_res=1242*2208&req_sn=1487325230330&eventId=cd0aff7e0a99513e25157c52a1a6589c&api_v=4.7&psp_status=1&psp_uid=1229289410&qyid=D2E02B97-0F35-486F-9CD4-A2EC13BBC8FB&secure_v=1&tsp=9804&dev_hw=%7B%22cpu%22:%22%22,%22mem%22:%222802%22%7D&pps=0&req_times=1'
+#返回的url
+# url = 'http://iface2.iqiyi.com/views_feed/3.0/film_feed?sei=S1a2acef101d24d5f8e913b7d6e57237dbjdx&page_t=film_feed&tsp=2095&eventId=cd0aff7e0a99513e25157c52a1a6589c&from_type=57&feed_pg_num=3&page_st=category_home'
+json_ = tools.get_json_by_requests(url, headers = headers)
+print(tools.dumps_json((json_)))

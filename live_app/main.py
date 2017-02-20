@@ -16,8 +16,8 @@ def main():
     def begin_callback():
         log.info('\n********** live_app begin **********')
         db.delete('LiveApp_urls', {})
-        db.update('LiveApp_anchor_info', {}, {"live_view" : 0})
-        db.update('LiveApp_anchor_info', {}, {"watched_count" : 0})
+        # db.update('LiveApp_anchor_info', {}, {"live_view" : 0})
+        # db.update('LiveApp_anchor_info', {}, {"watched_count" : 0})
 
     def end_callback():
         # 更新关键词状态 做完

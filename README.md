@@ -468,7 +468,7 @@ urls表 `GameApp_urls`
 |app_url||||app下载的url|
 |image_url||||图片url（多个url逗号分割）|
 |classify||||分类|
-|size||||大小|
+|software_size||||大小|
 |tag||||版本|
 |platform||||平台（ios / android）|
 |download_count||||下载次数|

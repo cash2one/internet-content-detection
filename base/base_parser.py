@@ -255,7 +255,7 @@ def add_appsite_info(table, site_id, url, name , app_url = '', summary = '', upd
 
     db.add(table, app_info)
 
-def add_anchor_info(table, site_id , name  = '', image_url  = '', room_id  = '', room_url  = '', video_path = '',  watched_count  = '', fans_count  = '', sex  = '', age = '', address  = '', live_view = 1):
+def add_anchor_info(table, site_id , name  = '', image_url  = '', room_id  = '', room_url  = '', video_path = '',  watched_count  = '', fans_count  = '', sex  = '', age = '', address  = '', live_view = 1, watched_count_url = ''):
     '''
     @summary:
     ---------
@@ -272,6 +272,7 @@ def add_anchor_info(table, site_id , name  = '', image_url  = '', room_id  = '',
     @param age:  年龄
     @param address:   主播所在地址（城市）
     @param live_view: 直播状态（0 未直播 1 直播）
+    @param watched_count_url： 实时观众数地址
     ---------
     @result:
     '''
@@ -289,6 +290,7 @@ def add_anchor_info(table, site_id , name  = '', image_url  = '', room_id  = '',
         'video_path':video_path,
         'live_view':live_view,
         'record_time':tools.get_current_date(),
+        'watched_count_url':watched_count_url,
         'read_status':0
     }
 

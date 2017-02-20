@@ -125,10 +125,15 @@ def get_html_by_requests(url, headers = '', code = 'utf-8'):
 
     return html and len(html) < 1024 * 1024 and html or None, r
 
-def get_json_by_requests(url, params = None):
+def get_json_by_requests(url, params = None, headers = ''):
     json = {}
     try:
-        response = requests.get(url, params = params)
+        #response = requests.get(url, params = params)
+        if headers:
+            response = requests.get(url, params = params, headers=headers, timeout=TIME_OUT)
+        else:
+            response = requests.get(url, params = params, timeout=TIME_OUT)
+
         json = response.json()
     except Exception as e:
         log.error(e)
@@ -262,6 +267,13 @@ def dumps_json(json_):
         json_ = str(json_)
 
     return json_
+
+headers = {
+'User-Agent': 'living/3.9.4 (iPhone; iOS 9.3.1; Scale/3.00)',
+'Cookie': 'token=02062c434458ad1b278009a9bAX5diInm250f1c4',
+'Accept-Language': 'zh-Hans-CN;q=1',
+'Accept-Encoding': 'gzip'
+}
 
 def get_json_value(json_object, key):
     '''
