@@ -463,6 +463,7 @@ urls表 `GameApp_urls`
 |title||||标题|
 |summary||||简介|
 |update_info||||更新信息|
+|socre||||评分|
 |author||||作者|
 |url||||原文url|
 |app_url||||app下载的url|

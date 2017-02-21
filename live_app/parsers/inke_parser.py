@@ -72,7 +72,7 @@ def add_root_url(search_keyword1 = [], search_keyword2 = [], search_keyword3 = [
     }
 
     url = tools.joint_url('http://120.55.238.158/api/live/simpleall', params)
-    base_parser.add_url('LiveApp_urls', SITE_ID, url, remark=remark)
+    base_parser.add_url('LiveAp p_urls', SITE_ID, url, remark=remark)
 
 
 # 必须定义 解析网址

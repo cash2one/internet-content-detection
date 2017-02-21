@@ -30,6 +30,8 @@ def main():
 
     # 添加parser
     spider.add_parser(inke_parser)
+    spider.add_parser(huajiao_parser)
+
 
     spider.start()
 
