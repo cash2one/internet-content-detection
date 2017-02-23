@@ -476,4 +476,23 @@ def get_md5(source_str):
     m.update(source_str.encode('utf-8'))
     return m.hexdigest()
 
+def get_base64(secret, message):
+    '''
+    @summary: 数字证书签名算法是："HMAC-SHA256"
+              参考：https://www.jokecamp.com/blog/examples-of-creating-base64-hashes-using-hmac-sha256-in-different-languages/
+    ---------
+    @param secret: 秘钥
+    @param message: 消息
+    ---------
+    @result: 签名输出类型是："base64"
+    '''
 
+    import hashlib
+    import hmac
+    import base64
+
+    message = bytes(message, 'utf-8')
+    secret = bytes(secret, 'utf-8')
+
+    signature = base64.b64encode(hmac.new(secret, message, digestmod=hashlib.sha256).digest())
+    return signature
